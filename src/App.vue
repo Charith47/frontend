@@ -1,32 +1,54 @@
 <template>
-  <div id="app">
-    <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
-    </div>
-    <router-view/>
-  </div>
+	<v-app>
+		<!-- top app bar -->
+		<v-app-bar app color="white" dark>
+			<v-spacer></v-spacer>
+
+			<!-- wallet amount -->
+			<v-btn style="padding: 0; margin: 0" text>
+				<span class="mr-2 black--text">
+					<v-icon color="black">mdi-circle-multiple</v-icon>
+					{{ walletAmount }} LKR</span
+				>
+			</v-btn>
+		</v-app-bar>
+
+		<!-- router view -->
+		<v-main>
+			<router-view />
+		</v-main>
+
+		<!-- bottom nav bar -->
+		<v-bottom-navigation color="teal" grow>
+			<v-btn to="/">
+				<v-icon>mdi-home</v-icon>
+			</v-btn>
+
+			<v-btn to="/wallet">
+				<v-icon>mdi-wallet</v-icon>
+			</v-btn>
+
+			<v-btn>
+				<v-icon>mdi-qrcode</v-icon>
+			</v-btn>
+			<v-btn>
+				<v-icon>mdi-ticket-confirmation</v-icon>
+			</v-btn>
+			<v-btn>
+				<v-icon>mdi-account</v-icon>
+			</v-btn>
+		</v-bottom-navigation>
+	</v-app>
 </template>
 
-<style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-}
+<style></style>
 
-#nav {
-  padding: 30px;
-}
+<script>
+export default {
+	name: 'App',
 
-#nav a {
-  font-weight: bold;
-  color: #2c3e50;
-}
-
-#nav a.router-link-exact-active {
-  color: #42b983;
-}
-</style>
+	data: () => ({
+		walletAmount: 245.76,
+	}),
+};
+</script>
