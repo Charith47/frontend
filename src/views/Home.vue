@@ -1,16 +1,16 @@
 <template>
 	<div id="wrapper">
 		<v-container>
-			<br /><br />
+			<br />
 			<v-card class="d-flex justify-center" flat color="transparent">
 				<img width="150" src="../assets/logo/logo-circle.svg" alt="" />
 			</v-card>
 
-			<br /><br />
+			<br />
 			<v-row>
 				<v-col cols="12" sm="4">
 					<!-- selection panel -->
-					<v-card class="pa-2 pb-0" outlined>
+					<v-card class="pa-2 pb-0" outlined  elevation="5">
 						<v-tabs grow>
 							<!-- switch between modes -->
 							<v-tab>
@@ -53,6 +53,7 @@
 									placeholder="Search arrival location"
 								></v-text-field>
 
+								<!-- date picker -->
 								<v-dialog
 									ref="dialog"
 									v-model="modal"
@@ -70,7 +71,12 @@
 											v-on="on"
 										></v-text-field>
 									</template>
-									<v-date-picker class="pt-0" min="2021-09-22" v-model="date" scrollable>
+									<v-date-picker
+										class="pt-0"
+										min="2021-09-22"
+										v-model="date"
+										scrollable
+									>
 										<v-spacer></v-spacer>
 										<v-btn text color="primary" @click="modal = false">
 											Cancel
@@ -98,7 +104,8 @@
 
 <style scoped>
 #wrapper {
-	height: 80vh;
+	overflow: hidden;
+	height: 100vh;
 	background-image: url('../assets/backgrounds/wave01.svg');
 }
 </style>
