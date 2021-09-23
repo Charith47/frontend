@@ -1,4 +1,5 @@
 <template>
+
 	<v-app id="main">
 		<!-- top app bar -->
 		<v-app-bar app dense>
@@ -19,7 +20,7 @@
 		</v-main>
 
 		<!-- bottom nav bar -->
-		<v-bottom-navigation fixed color="u_orange" grow>
+		<v-bottom-navigation app color="u_orange" grow>
 			<v-btn to="/">
 				<v-icon>mdi-home</v-icon>
 			</v-btn>
@@ -38,12 +39,18 @@
 				<v-icon>mdi-account</v-icon>
 			</v-btn>
 		</v-bottom-navigation>
+
 	</v-app>
+
 </template>
 
 <style>
 #main {
-	background-color: #f7f7f7;
+	background-color: #F4F5FA;
+	background-size: cover;
+}
+.nav-buttons > a {
+    height: auto!Important;
 }
 </style>
 
