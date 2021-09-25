@@ -1,13 +1,26 @@
 <template>
-	<div>
-		<p class="error">{{ error }}</p>
+	<v-container>
+		<v-alert
+			v-if="error"
+			border="top"
+			color="red"
+			dismissible
+			dense
+			type="error"
+			>{{ error }}</v-alert
+		>
 
 		<p class="decode-result">
 			Last result: <b>{{ result }}</b>
 		</p>
 
 		<qrcode-stream @decode="onDecode" @init="onInit" />
-	</div>
+
+		<v-alert v-if="result" border="top" color="green" dismissible type="success">{{
+			result
+		}}</v-alert>
+
+	</v-container>
 </template>
 
 <script>
