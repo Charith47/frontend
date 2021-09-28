@@ -32,7 +32,7 @@
 
 			<!-- login form -->
 			<v-card-text>
-				<v-form>
+				<v-form @submit.prevent="pressed">
 					<v-text-field
 						v-model="email"
 						outlined
@@ -65,7 +65,7 @@
 						</a>
 					</div>
 
-					<v-btn block color="primary" class="mt-6">
+					<v-btn type="submit" block color="primary" class="mt-6">
 						Login
 					</v-btn>
 				</v-form>
@@ -86,43 +86,29 @@
 
 <script>
 // eslint-disable-next-line object-curly-newline
-import {
-	mdiFacebook,
-	mdiTwitter,
-	mdiGithub,
-	mdiGoogle,
-	mdiEyeOutline,
-	mdiEyeOffOutline,
-} from '@mdi/js';
+import { mdiEyeOutline, mdiEyeOffOutline } from '@mdi/js';
+import firebase from 'firebase/compat/app';
+import 'firebase/compat/auth';
 
 export default {
+	methods: {
+		async pressed() {
+			try {
+				const user = await firebase
+					.auth()
+					.signInWithEmailAndPassword(this.email, this.password);
+				console.log(user);
+				this.$router.replace({ name: 'Home' });
+			} catch (err) {
+				console.log(err);
+			}
+		},
+	},
 	data() {
 		return {
 			isPasswordVisible: false,
 			email: '',
 			password: '',
-			socialLink: [
-				{
-					icon: mdiFacebook,
-					color: '#4267b2',
-					colorInDark: '#4267b2',
-				},
-				{
-					icon: mdiTwitter,
-					color: '#1da1f2',
-					colorInDark: '#1da1f2',
-				},
-				{
-					icon: mdiGithub,
-					color: '#272727',
-					colorInDark: '#fff',
-				},
-				{
-					icon: mdiGoogle,
-					color: '#db4437',
-					colorInDark: '#db4437',
-				},
-			],
 			icons: {
 				mdiEyeOutline,
 				mdiEyeOffOutline,
