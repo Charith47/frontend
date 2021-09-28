@@ -47,7 +47,7 @@
 	background-size: cover;
 }
 .nav-buttons > a {
-	height: auto!Important;
+	height: auto !important;
 }
 </style>
 
