@@ -9,7 +9,7 @@
 		<v-row>
 			<v-col cols="12" sm="4">
 				<!-- selection panel -->
-				<v-card class="pa-2 pb-0" outlined elevation="4">
+				<v-card flat outlined class="pa-2 pb-0">
 					<v-tabs grow color="deep-purple accent-4">
 						<!-- switch between modes -->
 						<v-tab>

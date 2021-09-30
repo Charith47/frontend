@@ -1,16 +1,14 @@
 <template>
 	<v-app id="main">
 		<!-- top app bar -->
-		<v-app-bar app dense>
+		<v-app-bar v-if="showAppBars" app dense>
 			<v-spacer></v-spacer>
 
 			<!-- wallet amount -->
-			<v-btn to="/wallet" class="px-0 py-0 mx-0 my-0" text>
-				<span class="mr-2 black--text">
-					<!-- <v-icon color="black">mdi-circle-multiple</v-icon> -->
-					{{ walletAmount }} LKR</span
-				>
-			</v-btn>
+			<span class="mr-2 secondary--text">
+				<!-- <v-icon color="black">mdi-circle-multiple</v-icon> -->
+				{{ walletAmount }} LKR</span
+			>
 		</v-app-bar>
 
 		<!-- router view -->
@@ -19,7 +17,7 @@
 		</v-main>
 
 		<!-- bottom nav bar -->
-		<v-bottom-navigation app color="primary" grow>
+		<v-bottom-navigation v-if="showAppBars" app color="primary" grow>
 			<v-btn to="/">
 				<v-icon>mdi-home</v-icon>
 			</v-btn>
@@ -52,11 +50,21 @@
 </style>
 
 <script>
+//import firebase from 'firebase/compat/app';
+//import 'firebase/compat/auth';
+
 export default {
 	name: 'App',
-
 	data: () => ({
+		showAppBars: false,
 		walletAmount: 245.76,
 	}),
+	watch: {
+		$route(to) {
+			if (to.fullPath === '/login' || to.fullPath === '/register')
+				this.showAppBars = false;
+			else this.showAppBars = true;
+		},
+	},
 };
 </script>

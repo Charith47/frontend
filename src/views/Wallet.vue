@@ -7,7 +7,7 @@
 		>
 		<p class="secondary--text">Let's check out your wallet</p>
 
-		<v-card class="my-4 px-4 py-4">
+		<v-card flat outlined class="my-4 px-4 py-4">
 			<h4 class="font-weight-regular secondary--text">Balance</h4>
 			<span
 				><h1 class="font-weight-medium secondary--text">223.l4 LKR</h1></span
@@ -19,7 +19,7 @@
 		<h2 class="pt-4 font-weight-medium primary--text">History</h2>
 		<p class="secondary--text">Here is the latest transactions you performed</p>
 
-		<v-card>
+		<v-card flat outlined>
 			<v-container>
 				<v-row>
 					<v-col>

@@ -1,9 +1,15 @@
 <template>
 	<v-container>
-		<h1>Account</h1>
-		<v-btn @click="logout" block color="primary">
-			Logout
-		</v-btn>
+			<v-card class="d-flex justify-center" flat color="transparent">
+				<v-avatar color="indigo" size="128">
+					<span>MK</span>
+				</v-avatar>
+			</v-card>
+		<v-card flat outlined class="px-2 py-2">
+			<v-btn @click="logout" block color="primary">
+				Logout
+			</v-btn>
+		</v-card>
 	</v-container>
 </template>
 

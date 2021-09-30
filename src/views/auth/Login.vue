@@ -1,23 +1,20 @@
 <template>
-	<v-container>
-		<br /><br />
-		<v-card class="auth-card">
+	<v-container class="my-10">
+		<v-card flat class="auth-card my-16">
 			<!-- logo -->
 			<v-card-title class="d-flex align-center justify-center py-7">
-				<router-link to="/" class="d-flex align-center">
-					<v-img
-						:src="require('@/assets/logo/logo-circle-purple.svg')"
-						max-height="30px"
-						max-width="30px"
-						alt="logo"
-						contain
-						class="me-3 "
-					></v-img>
+				<v-img
+					:src="require('@/assets/logo/logo-circle-purple.svg')"
+					max-height="30px"
+					max-width="30px"
+					alt="logo"
+					contain
+					class="me-3 "
+				></v-img>
 
-					<h2 class="text-2xl font-weight-semibold">
-						Unibus
-					</h2>
-				</router-link>
+				<h2 class="text-2xl font-weight-semibold primary--text">
+					UNIBUS
+				</h2>
 			</v-card-title>
 
 			<!-- title -->
@@ -30,6 +27,18 @@
 				</p>
 			</v-card-text>
 
+			<!-- error alert -->
+
+			<v-alert
+				class="mx-4"
+				v-if="error"
+				border="left"
+				color="red"
+				dense
+				type="error"
+				>{{ error }}</v-alert
+			>
+
 			<!-- login form -->
 			<v-card-text>
 				<v-form @submit.prevent="pressed">
@@ -37,7 +46,7 @@
 						v-model="email"
 						outlined
 						label="Email"
-						placeholder="email@example.com"
+						placeholder="yourname@example.com"
 						hide-details
 						class="mb-3"
 					></v-text-field>
@@ -47,7 +56,7 @@
 						outlined
 						:type="isPasswordVisible ? 'text' : 'password'"
 						label="Password"
-						placeholder="············"
+						placeholder="Enter your password"
 						:append-icon="
 							isPasswordVisible ? icons.mdiEyeOffOutline : icons.mdiEyeOutline
 						"
@@ -65,7 +74,7 @@
 						</a>
 					</div>
 
-					<v-btn type="submit" block color="primary" class="mt-6">
+					<v-btn :loading="isLoading" type="submit" block color="primary" class="mt-6">
 						Login
 					</v-btn>
 				</v-form>
@@ -76,13 +85,19 @@
 				<span class="me-2">
 					New on our platform?
 				</span>
-				<router-link :to="{ name: 'pages-register' }">
+				<router-link :to="{ name: 'Register' }">
 					Create an account
 				</router-link>
 			</v-card-text>
 		</v-card>
 	</v-container>
 </template>
+
+<style scoped>
+a {
+	text-decoration: none;
+}
+</style>
 
 <script>
 // eslint-disable-next-line object-curly-newline
@@ -91,22 +106,37 @@ import firebase from 'firebase/compat/app';
 import 'firebase/compat/auth';
 
 export default {
+
 	methods: {
 		async pressed() {
 			try {
+				// start loading animation on click
+				this.isLoading = true;
+
 				const user = await firebase
 					.auth()
 					.signInWithEmailAndPassword(this.email, this.password);
 				console.log(user);
 				this.$router.replace({ name: 'Home' });
 			} catch (err) {
-				console.log(err);
+				// stop loading animation if error occurs
+				this.isLoading = false;
+
+				const errorMessage = err.message.toString().split('/')[1];
+				console.log(errorMessage);
+				if (errorMessage.startsWith('wrong-password')) {
+					this.error = 'Incorrect password';
+				} else if (errorMessage.startsWith('user-not-found')) {
+					this.error = 'User not found';
+				}
 			}
 		},
 	},
 	data() {
 		return {
+			error: '',
 			isPasswordVisible: false,
+			isLoading: false,
 			email: '',
 			password: '',
 			icons: {
