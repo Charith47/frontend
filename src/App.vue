@@ -1,7 +1,7 @@
 <template>
 	<v-app id="main">
 		<!-- top app bar -->
-		<v-app-bar v-if="showAppBars" app dense>
+		<v-app-bar v-if="this.appBarState" app dense>
 			<v-spacer></v-spacer>
 
 			<!-- wallet amount -->
@@ -17,7 +17,7 @@
 		</v-main>
 
 		<!-- bottom nav bar -->
-		<v-bottom-navigation v-if="showAppBars" app color="primary" grow>
+		<v-bottom-navigation v-if="this.appBarState" app color="primary" grow>
 			<v-btn to="/">
 				<v-icon>mdi-home</v-icon>
 			</v-btn>
@@ -50,25 +50,31 @@
 </style>
 
 <script>
-//import firebase from 'firebase/compat/app';
-//import 'firebase/compat/auth';
+import firebase from 'firebase/compat/app';
+import 'firebase/compat/auth';
 
 export default {
-	name: 'App',
 	data: () => ({
-		user:'',
 		showAppBars: false,
 		walletAmount: 245.76,
 	}),
-	mounted(){
-
+	created() {
+		const user = firebase.auth().currentUser;
+		if (user) this.$store.commit('showAppBars');
+		else this.$store.commit('hideAppBars');
+	},
+	computed: {
+		appBarState() {
+			return this.$store.state.showAppBars;
+		},
 	},
 	watch: {
 		$route(to) {
 			if (to.fullPath === '/login' || to.fullPath === '/register')
-				this.showAppBars = false;
-			else this.showAppBars = true;
+				this.$store.commit('hideAppBars');
+			else this.$store.commit('showAppBars');
 		},
 	},
+	name: 'App',
 };
 </script>

@@ -115,14 +115,18 @@ export default {
 	methods: {
 		async pressed() {
 			try {
-				const user = await firebase
+				await firebase
 					.auth()
 					.createUserWithEmailAndPassword(this.email, this.password);
 
-				console.log(user)
+				const user = firebase.auth().currentUser;
+				user.updateProfile({
+					displayName: this.username,
+				});
+
 				this.$router.replace({ name: 'Home' });
 			} catch (err) {
-				console.log(err)
+				console.log(err);
 			}
 		},
 	},

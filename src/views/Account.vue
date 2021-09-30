@@ -1,12 +1,15 @@
 <template>
 	<v-container>
-			<v-card class="d-flex justify-center" flat color="transparent">
-				<v-avatar color="indigo" size="128">
-					<span>MK</span>
-				</v-avatar>
-			</v-card>
+		<v-card class="d-flex justify-center" flat color="transparent">
+			<v-avatar color="indigo" size="128">
+				<span>MK</span>
+			</v-avatar>
+		</v-card>
 		<v-card flat outlined class="px-2 py-2">
-			<span>{{this.userEmail}}</span>
+
+			<span>{{this.getUser.displayName}}<br></span>
+			<span>{{this.getUser.email}}</span>
+			
 			<v-btn @click="logout" block color="primary">
 				Logout
 			</v-btn>
@@ -35,11 +38,12 @@ export default {
 			loggedIn: false,
 		};
 	},
-	computed:{
-		userEmail(){
-			const email = firebase.auth().currentUser.email;
-			return email;
-		}
+	computed: {
+		getUser() {
+			const user = firebase.auth().currentUser;
+			console.log(user);
+			return user;
+		},
 	},
 	name: 'Account',
 };
