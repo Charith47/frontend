@@ -1,6 +1,6 @@
 <template>
 	<v-container class="my-10">
-		<v-card flat class="auth-card my-16">
+		<v-card flat class="auth-card my-12">
 			<!-- logo -->
 			<v-card-title class="d-flex align-center justify-center py-7">
 				<v-img
@@ -43,25 +43,29 @@
 			<v-card-text>
 				<v-form @submit.prevent="pressed">
 					<v-text-field
+						:error-messages="emailErrors"
 						v-model="email"
-						outlined
 						label="Email"
 						placeholder="yourname@example.com"
-						hide-details
+						outlined
 						class="mb-3"
+						@input="$v.email.$touch()"
+						@blur="$v.email.$touch()"
 					></v-text-field>
 
 					<v-text-field
+						:error-messages="passwordErrors"
 						v-model="password"
-						outlined
-						:type="isPasswordVisible ? 'text' : 'password'"
 						label="Password"
 						placeholder="Enter your password"
+						:type="isPasswordVisible ? 'text' : 'password'"
+						outlined
 						:append-icon="
 							isPasswordVisible ? icons.mdiEyeOffOutline : icons.mdiEyeOutline
 						"
-						hide-details
 						@click:append="isPasswordVisible = !isPasswordVisible"
+						@input="$v.password.$touch()"
+						@blur="$v.password.$touch()"
 					></v-text-field>
 
 					<div class="d-flex align-center justify-space-between flex-wrap">
@@ -74,7 +78,13 @@
 						</a>
 					</div>
 
-					<v-btn :loading="isLoading" type="submit" block color="primary" class="mt-6">
+					<v-btn
+						:loading="isLoading"
+						type="submit"
+						block
+						color="primary"
+						class="mt-6"
+					>
 						Login
 					</v-btn>
 				</v-form>
@@ -105,10 +115,24 @@ import { mdiEyeOutline, mdiEyeOffOutline } from '@mdi/js';
 import firebase from 'firebase/compat/app';
 import 'firebase/compat/auth';
 
-export default {
+import { validationMixin } from 'vuelidate';
+import { required, email } from 'vuelidate/lib/validators';
 
+export default {
+	mixins: [validationMixin],
+	validations: {
+		email: { required, email },
+		password: { required },
+	},
 	methods: {
 		async pressed() {
+			this.$v.$touch();
+
+			// if validation errors occur, abort
+			console.log(this.emailErrors, this.passwordErrors);
+			if (this.emailErrors.length !== 0 || this.passwordErrors.length !== 0)
+				return;
+
 			try {
 				// start loading animation on click
 				this.isLoading = true;
@@ -134,16 +158,31 @@ export default {
 	},
 	data() {
 		return {
+			email: '',
+			password: '',
 			error: '',
 			isPasswordVisible: false,
 			isLoading: false,
-			email: '',
-			password: '',
 			icons: {
 				mdiEyeOutline,
 				mdiEyeOffOutline,
 			},
 		};
+	},
+	computed: {
+		emailErrors() {
+			const errors = [];
+			if (!this.$v.email.$dirty) return errors;
+			!this.$v.email.email && errors.push('Must be valid e-mail');
+			!this.$v.email.required && errors.push('E-mail is required');
+			return errors;
+		},
+		passwordErrors() {
+			const errors = [];
+			if (!this.$v.password.$dirty) return errors;
+			!this.$v.email.required && errors.push('Password is required');
+			return errors;
+		},
 	},
 	name: 'Login',
 };

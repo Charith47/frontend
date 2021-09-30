@@ -56,9 +56,13 @@
 export default {
 	name: 'App',
 	data: () => ({
+		user:'',
 		showAppBars: false,
 		walletAmount: 245.76,
 	}),
+	mounted(){
+
+	},
 	watch: {
 		$route(to) {
 			if (to.fullPath === '/login' || to.fullPath === '/register')

@@ -6,6 +6,7 @@
 				</v-avatar>
 			</v-card>
 		<v-card flat outlined class="px-2 py-2">
+			<span>{{this.userEmail}}</span>
 			<v-btn @click="logout" block color="primary">
 				Logout
 			</v-btn>
@@ -33,6 +34,12 @@ export default {
 		return {
 			loggedIn: false,
 		};
+	},
+	computed:{
+		userEmail(){
+			const email = firebase.auth().currentUser.email;
+			return email;
+		}
 	},
 	name: 'Account',
 };
