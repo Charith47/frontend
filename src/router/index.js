@@ -49,11 +49,13 @@ const routes = [
 		path: '/login',
 		name: 'Login',
 		component: Login,
+		meta: { hideForAuth: true },
 	},
 	{
 		path: '/register',
 		name: 'Register',
 		component: Register,
+		meta: { hideForAuth: true },
 	},
 ];
 
@@ -65,16 +67,23 @@ const router = new VueRouter({
 
 /* eslint-disable no-unused-vars */
 router.beforeEach((to, from, next) => {
+	const hideForAuth = to.matched.some((record) => record.meta.hideForAuth);
 	const requiresAuth = to.matched.some((record) => record.meta.requiresAuth);
 	const isAuthenticated = firebase.auth().currentUser;
 
 	if (requiresAuth && !isAuthenticated) {
 		next('/login');
+	} else {
+		next();
 	}
-	else{
-		next()
+
+	if (hideForAuth && isAuthenticated) {
+		next('/');
+	} else {
+		next();
 	}
 });
+
 /* eslint-enable no-unused-vars */
 
 export default router;
