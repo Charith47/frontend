@@ -1,6 +1,6 @@
 <template>
 	<v-container class="my-7">
-		<v-card class="auth-card">
+		<v-card outlined flat class="auth-card">
 			<!-- logo -->
 			<v-card-title class="d-flex align-center justify-center pt-5">
 				<router-link to="/" class="d-flex align-center">
