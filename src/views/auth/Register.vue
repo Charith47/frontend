@@ -2,7 +2,7 @@
 	<v-container class="my-7">
 		<v-card class="auth-card">
 			<!-- logo -->
-			<v-card-title class="d-flex align-center justify-center py-7">
+			<v-card-title class="d-flex align-center justify-center pt-5">
 				<router-link to="/" class="d-flex align-center">
 					<v-img
 						:src="require('@/assets/logo/logo-circle-purple.svg')"
@@ -10,9 +10,8 @@
 						max-width="30px"
 						alt="logo"
 						contain
-						class="me-3 "
+						class="me-3"
 					></v-img>
-
 					<h2 class="text-2xl font-weight-semibold">
 						UNIBUS
 					</h2>
@@ -20,13 +19,10 @@
 			</v-card-title>
 
 			<!-- title -->
-			<v-card-text>
-				<p class="text-2xl font-weight-semibold text--primary mb-2">
-					Ride starts here 🚀
-				</p>
-				<p class="mb-2">
-					Make your bus rides easy!
-				</p>
+			<v-card-text class="d-flex justify-center py-1">
+				<h3 class="text--primary font-weight-light my-0">
+					🚌 Your ride starts here <br />
+				</h3>
 			</v-card-text>
 
 			<!-- login form -->
@@ -37,7 +33,7 @@
 						outlined
 						label="Username"
 						placeholder="Enter your name"
-						class="mb-3"
+						class="mb-1"
 					></v-text-field>
 
 					<v-text-field
@@ -45,7 +41,7 @@
 						outlined
 						label="Email"
 						placeholder="Enter your email"
-						class="mb-3"
+						class="mb-1"
 					></v-text-field>
 
 					<v-text-field
@@ -53,7 +49,20 @@
 						outlined
 						:type="isPasswordVisible ? 'text' : 'password'"
 						label="Password"
-						placeholder="············"
+						placeholder="Enter a secure password"
+						:append-icon="
+							isPasswordVisible ? icons.mdiEyeOffOutline : icons.mdiEyeOutline
+						"
+						@click:append="isPasswordVisible = !isPasswordVisible"
+					></v-text-field>
+
+					<v-text-field
+						class="mt-1"
+						v-model="password"
+						outlined
+						:type="isPasswordVisible ? 'text' : 'password'"
+						label="Confirm Password"
+						placeholder="Confirm your password"
 						:append-icon="
 							isPasswordVisible ? icons.mdiEyeOffOutline : icons.mdiEyeOutline
 						"
@@ -69,7 +78,7 @@
 						</template>
 					</v-checkbox>
 
-					<v-btn type="submit" block color="primary" class="mt-6">
+					<v-btn type="submit" block color="primary" class="mt-2">
 						Sign Up
 					</v-btn>
 				</v-form>
@@ -131,6 +140,21 @@ export default {
 			} catch (err) {
 				console.log(err);
 			}
+		},
+	},
+	computed: {
+		emailErrors() {
+			const errors = [];
+			if (!this.$v.email.$dirty) return errors;
+			!this.$v.email.email && errors.push('Must be valid e-mail');
+			!this.$v.email.required && errors.push('E-mail is required');
+			return errors;
+		},
+		passwordErrors() {
+			const errors = [];
+			if (!this.$v.password.$dirty) return errors;
+			!this.$v.email.required && errors.push('Password is required');
+			return errors;
 		},
 	},
 	name: 'Login',
