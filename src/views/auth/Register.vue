@@ -1,5 +1,5 @@
 <template>
-	<v-container>
+	<v-container class="my-7">
 		<v-card class="auth-card">
 			<!-- logo -->
 			<v-card-title class="d-flex align-center justify-center py-7">
@@ -14,7 +14,7 @@
 					></v-img>
 
 					<h2 class="text-2xl font-weight-semibold">
-						Unibus
+						UNIBUS
 					</h2>
 				</router-link>
 			</v-card-title>
@@ -37,7 +37,6 @@
 						outlined
 						label="Username"
 						placeholder="Enter your name"
-						hide-details
 						class="mb-3"
 					></v-text-field>
 
@@ -46,7 +45,6 @@
 						outlined
 						label="Email"
 						placeholder="Enter your email"
-						hide-details
 						class="mb-3"
 					></v-text-field>
 
@@ -59,11 +57,10 @@
 						:append-icon="
 							isPasswordVisible ? icons.mdiEyeOffOutline : icons.mdiEyeOutline
 						"
-						hide-details
 						@click:append="isPasswordVisible = !isPasswordVisible"
 					></v-text-field>
 
-					<v-checkbox hide-details class="mt-1">
+					<v-checkbox class="mt-1">
 						<template #label>
 							<div class="d-flex align-center flex-wrap">
 								<span class="me-2">I agree to</span
@@ -90,6 +87,12 @@
 		</v-card>
 	</v-container>
 </template>
+
+<style scoped>
+a {
+	text-decoration: none;
+}
+</style>
 
 <script>
 // eslint-disable-next-line object-curly-newline
