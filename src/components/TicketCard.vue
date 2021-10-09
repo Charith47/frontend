@@ -1,28 +1,34 @@
 <template>
-	<v-container>
-		<v-card flat class="text-xs ma-3">
-			<v-card-text>
-				<div class="id">{{ id }}</div>
-				<div class="route">{{ start }} to {{ end }}</div>
-				<div class="price">{{ price }} LKR</div>
-			</v-card-text>
-			<v-card-actions>
-				<v-btn color="light-grey" @click="isSelected = !isSelected" :style="isSelected ? 'border: 1px solid red;' : null">
-					Select Route
-				</v-btn>
-			</v-card-actions>
-		</v-card>
-	</v-container>
+ <v-container>
+     <v-card flat class="text-xs ma-3">
+        <v-card-text>
+        <div class="id">Ticket ID : {{id}}</div>
+        <div class="route">Route : {{start}} to {{end}}</div>
+            <div class="price">Tciket price : LKR {{price}}</div>
+    </v-card-text>
+    <v-card-actions>
+        <v-btn flat color="light-grey">
+            Select Route
+        </v-btn>
+    </v-card-actions>
+    </v-card>
+ </v-container>
 </template>
 
+<style scoped>
+.ticketCard {
+  bottom: 0;
+  opacity: 1 !important;
+  position: absolute;
+  width: 100%;
+}
+</style>
+
 <script>
-export default {
-	props: ['id', 'start', 'end', 'price'],
-	data() {
-		return {
-			isSelected: false,
-		};
-	},
-	name: 'TicketCard',
-};
+export default ({
+    props:['id','start','end','price'],
+    name:'TicketCard'
+   
+})
 </script>
+
