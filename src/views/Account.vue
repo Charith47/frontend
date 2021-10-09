@@ -1,85 +1,99 @@
 <template>
-  <v-container>
-    <v-row class="d-flex flex-column">
-      <v-card class="d-flex justify-center" flat color="transparent">
-        <v-avatar color="indigo" size="128">
-          <!-- {{userInitials(user)}} -->
-        </v-avatar>
+	<v-container id="background" class="red py-12">
+		<v-row class="d-flex flex-column">
+			<!--User avatar-->
+			<v-card class="d-flex justify-center" flat color="transparent">
+				<v-avatar color="indigo" size="110">
+					<span class="white--text text-h3">{{ initials.toUpperCase() }}</span>
+				</v-avatar>
+			</v-card>
 
-        <div class="accountInfo">
-          <v-icon> mdi-account </v-icon>
-          <span>{{ this.getUser.displayName }}<br /></span>
+			<!--User DN and email-->
+			<v-card
+				class="d-flex flex-column justify-center pt-6 pb-4"
+				flat
+				color="transparent"
+			>
+				<v-card class="d-flex justify-center" flat color="transparent">
+					<span><v-icon> mdi-account </v-icon>{{ displayName }}<br /></span>
+				</v-card>
+				<v-card class="d-flex justify-center" flat color="transparent">
+					<v-icon> mdi-email </v-icon>
+					<span>{{ email }}<br /></span>
+				</v-card>
+			</v-card>
 
-          <v-icon> mdi-email </v-icon>
-          <span>{{ this.getUser.email }}<br /></span>
-        </div>
-      </v-card>
-    </v-row>
-
-    <v-container>
-      <v-row class="d-flex flex-column">
-        <v-card>
-          <v-btn block class="btn">
-            <v-icon> mdi-bus </v-icon>
-            <span>Ride History<br /></span>
-          </v-btn>
-          <v-btn block class="btn">
-            <v-icon> mdi-cash </v-icon>
-            <span>Payment History<br /></span>
-          </v-btn>
-          <v-btn block class="btn">
-            <v-icon> mdi-cog </v-icon>
-            <span>Settings<br /></span>
-          </v-btn>
-          <v-btn @click="logout" block color="primary">
-            <v-icon> mdi-logout </v-icon>
-            Logout
-          </v-btn>
-        </v-card>
-      </v-row>
-    </v-container>
-  </v-container>
+			<!--User settings and more-->
+			<br>
+			<v-card class="mx-4" flat color="transparent">
+				<v-btn block class="my-2">
+					<v-icon> mdi-bus </v-icon>
+					<span>Ride History<br /></span>
+				</v-btn>
+				<v-btn block class="my-2">
+					<v-icon> mdi-cash </v-icon>
+					<span>Payment History<br /></span>
+				</v-btn>
+				<v-btn block class="my-2">
+					<v-icon> mdi-cog </v-icon>
+					<span>Settings<br /></span>
+				</v-btn>
+				<br><br><br><br><br><br><br>
+				<v-btn @click="logout" class="my-2" block color="primary">
+					<v-icon> mdi-logout </v-icon>
+					Logout
+				</v-btn>
+			</v-card>
+		</v-row>
+	</v-container>
 </template>
 
-<script>
-import firebase from "firebase/compat/app";
-import "firebase/compat/auth";
-
-export default {
-  methods: {
-    async logout() {
-      try {
-        const data = await firebase.auth().signOut();
-        console.log(data);
-        this.$router.replace({ name: "Login" });
-      } catch (err) {
-        console.log(err);
-      }
-    },
-
-    userInitials(displayName) {
-      const name = displayName.split(" ");
-      return `${name[0].charAt(0)}${name[1] ? name[1].charAt(0) : ""}`;
-    },
-  },
-  data() {
-    return {
-      loggedIn: false,
-    };
-  },
-  computed: {
-    getUser() {
-      const user = firebase.auth().currentUser;
-      console.log(user);
-      return user;
-    },
-  },
-  name: "Account",
-};
-</script>
-
 <style scoped>
-.btn {
-  color: light-grey;
+#background {
+	background: url('../assets/backgrounds/size-04.png') no-repeat center center
+		fixed !important;
+	height: inherit;
 }
 </style>
+
+<script>
+import firebase from 'firebase/compat/app';
+import 'firebase/compat/auth';
+
+export default {
+	mounted() {
+		this.user = firebase.auth().currentUser;
+		if (this.user) {
+			this.email = this.user.email;
+			this.displayName = this.user.displayName;
+			this.initials = this.userInitials(this.displayName);
+		}
+	},
+	methods: {
+		async logout() {
+			try {
+				const data = await firebase.auth().signOut();
+				console.log(data);
+				this.$router.replace({ name: 'Login' });
+			} catch (err) {
+				console.log(err);
+			}
+		},
+
+		userInitials(displayName) {
+			const name = displayName.split(' ');
+			return `${name[0].charAt(0)}${name[1] ? name[1].charAt(0) : ''}`;
+		},
+	},
+	data() {
+		return {
+			user: '',
+			displayName: '',
+			initials: '',
+			email: '',
+			loggedIn: false,
+		};
+	},
+	name: 'Account',
+};
+</script>

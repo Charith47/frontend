@@ -56,7 +56,6 @@ import 'firebase/compat/auth';
 
 export default {
 	data: () => ({
-		showAppBars: false,
 		walletAmount: 245.76,
 	}),
 	created() {
