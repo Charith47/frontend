@@ -1,6 +1,6 @@
 <template>
 	<v-container class="my-10">
-		<v-card flat class="auth-card my-12">
+		<v-card flat outlined class="auth-card my-12">
 			<!-- logo -->
 			<v-card-title class="d-flex align-center justify-center py-7">
 				<v-img
@@ -18,13 +18,17 @@
 			</v-card-title>
 
 			<!-- title -->
-			<v-card-text>
-				<p class="text-2xl font-weight-semibold text--primary mb-2">
-					Welcome to Unibus! 👋🏻
-				</p>
-				<p class="mb-2">
-					Please sign-in to your account and start the ride
-				</p>
+			<v-card-text class="d-flex justify-center">
+				<v-row>
+					<v-col>
+						<p class="text-2xl font-weight-semibold text--primary mb-2">
+							Welcome to Unibus! 👋🏻
+						</p>
+						<p class="mb-2">
+							Please sign-in to your account and start the ride
+						</p>
+					</v-col>
+				</v-row>
 			</v-card-text>
 
 			<!-- error alert -->
@@ -68,15 +72,9 @@
 						@blur="$v.password.$touch()"
 					></v-text-field>
 
-					<div class="d-flex align-center justify-space-between flex-wrap">
-						<v-checkbox label="Remember Me" hide-details class="me-3 mt-1">
-						</v-checkbox>
-
-						<!-- forgot link -->
-						<a href="javascript:void(0)" class="mt-1">
-							Forgot Password?
-						</a>
-					</div>
+					<a href="javascript:void(0)" class="mt-1">
+						Forgot Password?
+					</a>
 
 					<v-btn
 						:loading="isLoading"

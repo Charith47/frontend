@@ -44,9 +44,10 @@
 	background-color: #f4f5fa;
 	background-size: cover;
 }
-.nav-buttons > a {
+/*
+.v-btn:not(.v-btn--round).v-size--default {
 	height: auto !important;
-}
+}*/
 </style>
 
 <script>

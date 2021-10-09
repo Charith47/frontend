@@ -1,25 +1,35 @@
 <template>
-	<v-container>
-		<v-alert
-			v-if="error"
-			border="top"
-			color="red"
-			dismissible
-			dense
-			type="error"
-			>{{ error }}</v-alert
-		>
-
-		<p class="decode-result">
-			Last result: <b>{{ result }}</b>
-		</p>
-
-		<qrcode-stream @decode="onDecode" @init="onInit" />
-
-		<v-alert v-if="result" border="top" color="green" dismissible type="success">{{
-			result
-		}}</v-alert>
-
+	<v-container class="d-flex flex-column">
+		<v-row>
+			<v-col class="orange">
+				<v-alert
+					v-if="error"
+					border="top"
+					color="red"
+					dismissible
+					dense
+					type="error"
+					>{{ error }}</v-alert
+				>
+			</v-col>
+		</v-row>
+		<v-row>
+			<v-col class="green">
+				<qrcode-stream @decode="onDecode" @init="onInit" />
+			</v-col>
+		</v-row>
+		<v-row>
+			<v-col class="blue">
+				<v-alert
+					v-if="result"
+					border="top"
+					color="green"
+					dismissible
+					type="success"
+					>{{ result }}</v-alert
+				>
+			</v-col>
+		</v-row>
 	</v-container>
 </template>
 

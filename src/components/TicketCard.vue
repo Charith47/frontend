@@ -1,5 +1,4 @@
 <template>
-
  <v-container>
      <v-card flat class="text-xs ma-3">
         <v-card-text>
@@ -14,17 +13,7 @@
     </v-card-actions>
     </v-card>
  </v-container>
-    
 </template>
-
-<script>
-
-export default ({
-    props:['id','start','end','price'],
-    name:'TicketCard'
-   
-})
-</script>
 
 <style scoped>
 .ticketCard {
@@ -34,3 +23,12 @@ export default ({
   width: 100%;
 }
 </style>
+
+<script>
+export default ({
+    props:['id','start','end','price'],
+    name:'TicketCard'
+   
+})
+</script>
+
