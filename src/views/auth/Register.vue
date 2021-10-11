@@ -121,7 +121,6 @@ export default {
   methods: {
     async pressed() {
       try {
-
         await firebase
           .auth()
           .createUserWithEmailAndPassword(this.email, this.password);
@@ -140,7 +139,10 @@ export default {
           dynamicLinkDomain: "unibus-app.ml",
         };
 
-		user.sendEmailVerification(actionCodeSettings);
+        user.sendEmailVerification(actionCodeSettings).then(()=>{
+			this.$router.replace({ name: "Verify" });
+		});
+		
         //this.$router.replace({ name: "Home" });
       } catch (err) {
         console.log(err);
