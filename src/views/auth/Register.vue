@@ -136,13 +136,12 @@ export default {
         const actionCodeSettings = {
           url: "https://unibus-app.ml/home",
           handleCodeInApp: true,
-          dynamicLinkDomain: "unibus-app.ml",
         };
 
         user.sendEmailVerification(actionCodeSettings).then(()=>{
 			this.$router.replace({ name: "Verify" });
 		});
-		
+
         //this.$router.replace({ name: "Home" });
       } catch (err) {
         console.log(err);
