@@ -8,6 +8,7 @@ import Tickets from '../views/Tickets.vue';
 import Account from '../views/Account.vue';
 import Login from '../views/auth/Login.vue';
 import Register from '../views/auth/Register.vue';
+import VerifyEmail from '../views/auth/VerifyEmail.vue';
 
 import firebase from 'firebase/compat/app';
 import 'firebase/compat/auth';
@@ -57,6 +58,11 @@ const routes = [
 		component: Register,
 		meta: { hideForAuth: true },
 	},
+	{
+		path: '/verify',
+		name: 'Verify',
+		component: VerifyEmail,
+	}
 ];
 
 const router = new VueRouter({

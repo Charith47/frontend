@@ -6,6 +6,7 @@ Vue.use(Vuex)
 export default new Vuex.Store({
   state: {
     showAppBars:false,
+    isEmailVerified: false,
   },
   mutations: {
     showAppBars: state=>{
@@ -13,6 +14,9 @@ export default new Vuex.Store({
     },
     hideAppBars: state=>{
       state.showAppBars = false;
+    },
+    setEmailVerified: state=>{
+      state.isEmailVerified = true;
     }
   },
   actions: {

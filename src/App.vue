@@ -18,21 +18,21 @@
 
 		<!-- bottom nav bar -->
 		<v-bottom-navigation v-if="this.appBarState" app color="primary" grow>
-			<v-btn to="/">
+			<v-btn class="nav-btn-main" to="/">
 				<v-icon>mdi-home</v-icon>
 			</v-btn>
 
-			<v-btn to="/wallet">
+			<v-btn class="nav-btn-main" to="/wallet">
 				<v-icon>mdi-wallet</v-icon>
 			</v-btn>
 
-			<v-btn to="/scan">
+			<v-btn class="nav-btn-main" to="/scan">
 				<v-icon>mdi-qrcode</v-icon>
 			</v-btn>
-			<v-btn to="/tickets">
+			<v-btn class="nav-btn-main" to="/tickets">
 				<v-icon>mdi-ticket-confirmation</v-icon>
 			</v-btn>
-			<v-btn to="/account">
+			<v-btn class="nav-btn-main" to="/account">
 				<v-icon>mdi-account</v-icon>
 			</v-btn>
 		</v-bottom-navigation>
@@ -44,10 +44,9 @@
 	background-color: #f4f5fa;
 	background-size: cover;
 }
-/*
-.v-btn:not(.v-btn--round).v-size--default {
+.nav-btn-main{
 	height: auto !important;
-}*/
+}
 </style>
 
 <script>
