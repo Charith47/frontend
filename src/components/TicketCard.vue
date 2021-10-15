@@ -4,7 +4,7 @@
         <v-card-text>
         <div class="id">Ticket ID : {{id}}</div>
         <div class="route">Route : {{start}} to {{end}}</div>
-            <div class="price">Tciket price : LKR {{price}}</div>
+            <div class="price">Ticket price : LKR {{price}}</div>
     </v-card-text>
     <v-card-actions>
         <v-btn flat color="light-grey">
