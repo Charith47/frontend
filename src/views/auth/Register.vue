@@ -82,7 +82,13 @@
                         </template>
                     </v-checkbox>
 
-                    <v-btn type="submit" block color="primary" class="mt-2">
+                    <v-btn
+                        :loading="isLoading"
+                        type="submit"
+                        block
+                        color="primary"
+                        class="mt-2"
+                    >
                         Sign Up
                     </v-btn>
                 </v-form>
@@ -140,6 +146,7 @@ export default {
             username: '',
             error: '',
             isPasswordVisible: false,
+            isLoading: false,
             checkbox: false,
             icons: {
                 mdiEyeOutline,
@@ -150,6 +157,8 @@ export default {
     methods: {
         async pressed() {
             try {
+                // start loading animation
+                this.isLoading = true;
                 await firebase
                     .auth()
                     .createUserWithEmailAndPassword(this.email, this.password);
@@ -160,17 +169,21 @@ export default {
                     displayName: this.username,
                 });
 
-                // add user to db
                 const storeUser = JSON.parse(JSON.stringify(user));
 
-                firebase
-                    .firestore()
-                    .collection('users')
-                    .doc(user.uid)
-                    .set(storeUser);
+                const db = firebase.firestore();
+                const usersCollection = db.collection('users');
 
+                usersCollection.doc(user.uid).set(storeUser);
+                usersCollection
+                    .doc(user.uid)
+                    .set({ walletAmount: 0 }, { merge: true });
+                    
+                this.$store.commit('initializeWallet', 0);
                 this.$router.replace({ name: 'Home' });
             } catch (err) {
+                // stop loading animation
+                this.isLoading = false;
                 console.log(err);
             }
         },

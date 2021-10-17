@@ -11,7 +11,7 @@
             <h4 class="font-weight-regular secondary--text">Balance</h4>
             <span
                 ><h1 class="font-weight-medium secondary--text">
-                    223.l4 LKR
+                    {{ this.getWalletAmount }} LKR
                 </h1></span
             >
             <v-btn to="/re" outlined block color="primary">RECHARGE</v-btn>
@@ -23,7 +23,7 @@
             Here is the latest transactions you performed
         </p>
 
-		<Transaction></Transaction>
+        <Transaction></Transaction>
     </v-container>
 </template>
 
@@ -32,6 +32,11 @@ import Transaction from '../components/wallet/Transaction.vue';
 export default {
     components: {
         Transaction,
+    },
+    computed: {
+        getWalletAmount() {
+            return this.$store.state.walletAmount;
+        },
     },
     data() {
         return {
