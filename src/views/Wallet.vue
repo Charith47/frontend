@@ -14,7 +14,7 @@
                     {{ this.getWalletAmount }} LKR
                 </h1></span
             >
-            <v-btn to="/re" outlined block color="primary">RECHARGE</v-btn>
+            <v-btn to="/recharge" outlined block color="primary">RECHARGE</v-btn>
         </v-card>
 
         <v-divider></v-divider>

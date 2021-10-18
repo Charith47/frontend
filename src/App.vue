@@ -58,7 +58,7 @@ export default {
     data: () => ({}),
     created() {
         const user = firebase.auth().currentUser;
-
+        
         if (user) {
             // show app bars
             // update wallet amount
