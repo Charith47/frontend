@@ -21,8 +21,6 @@ export default new Vuex.Store({
         },
         initializeWallet: (state, trueAmount) => {
             state.walletAmount = trueAmount;
-            console.log(trueAmount);
-            console.log(state.walletAmount);
         },
         addMoney: (state, rechargeAmount) => {
             state.walletAmount += rechargeAmount;

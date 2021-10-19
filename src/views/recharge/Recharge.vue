@@ -1,5 +1,5 @@
 <template>
-    <v-container >
+    <v-container>
         <v-card flat class="px-2 py-2">
             <p class="secondary--text">
                 Please enter the amount and card details
@@ -19,8 +19,8 @@
             />
 
             <v-btn block color="primary" @click="submit"
-                >Pay {{ amount }} <span v-if="amount"> LKR </span> </v-btn
-            >
+                >Pay {{ amount }} <span v-if="amount"> LKR </span>
+            </v-btn>
         </v-card>
     </v-container>
 </template>
@@ -28,6 +28,11 @@
 <script src="https://js.stripe.com/v3/"></script>
 <script>
 import { StripeElementCard } from '@vue-stripe/vue-stripe';
+import axios from 'axios';
+
+import firebase from 'firebase/compat/app';
+import 'firebase/compat/auth';
+
 export default {
     components: {
         StripeElementCard,
@@ -49,9 +54,24 @@ export default {
             console.log('Hello');
         },
         tokenCreated(token) {
-            console.log(token);
-            // handle the token
-            // send it to your server
+            const user = firebase.auth().currentUser;
+
+            axios
+                .post('http://localhost:5000/transactions/create', {
+                    userId: user.uid,
+                    type: 'credit',
+                    amount: this.amount,
+                    token: token,
+                })
+                .then((response) => {
+                    this.$store.commit(
+                        'initializeWallet',
+                        parseInt(response.data.updatedWalletAmount)
+                    );
+                })
+                .catch((error) => {
+                    console.log(error);
+                });
         },
     },
 };
