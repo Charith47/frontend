@@ -123,6 +123,9 @@ export default {
 
                     // create success dialog
                     this.dialog = true;
+
+                    // update transactions
+                    this.$store.dispatch('getLatestTransactions');
                 })
                 .catch((error) => {
                     // create fail dialog
