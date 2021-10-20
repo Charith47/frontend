@@ -18,10 +18,56 @@
                 @token="tokenCreated"
             />
 
-            <v-btn block color="primary" @click="submit"
+            <v-btn block color="primary" @click="submit" :loading="isLoading"
                 >Pay {{ amount }} <span v-if="amount"> LKR </span>
             </v-btn>
         </v-card>
+
+        <!-- Success dialog -->
+        <v-dialog v-model="dialog" max-width="290">
+            <v-card>
+                <v-card-title class="text-h5">
+                    Payment Successful
+                </v-card-title>
+
+                <v-card-text> Credited {{ amount }} to your wallet <br> Transaction ID: {{ transactionId }} </v-card-text>
+
+                <v-card-actions>
+                    <v-spacer></v-spacer>
+
+                    <v-btn
+                        color="success"
+                        text
+                        @click="dialog = false"
+                        to="/wallet"
+                    >
+                        Okay
+                    </v-btn>
+                </v-card-actions>
+            </v-card>
+        </v-dialog>
+
+        <!-- Error dialog -->
+        <v-dialog v-model="errorDialog" max-width="290">
+            <v-card>
+                <v-card-title class="text-h5"> Payment Error </v-card-title>
+
+                <v-card-text>Insufficient funds in the card</v-card-text>
+
+                <v-card-actions>
+                    <v-spacer></v-spacer>
+
+                    <v-btn
+                        color="error"
+                        text
+                        @click="errorDialog = false"
+                        to="/wallet"
+                    >
+                        Okay
+                    </v-btn>
+                </v-card-actions>
+            </v-card>
+        </v-dialog>
     </v-container>
 </template>
 
@@ -41,14 +87,18 @@ export default {
         this.pulishableKey =
             'pk_test_51JdbLSHOhDuq1oSBXTT5Oz1ZjhK4uzKalsSgi8hBripsckK6FeFzewZIrRxLWa3ZeSK0fO3TkQ6FGvGbgaCXkWCG00oq5ERYio';
         return {
+            isLoading: false,
+            dialog: false,
+            errorDialog: false,
             amount: '',
+            transactionId: '',
             token: null,
         };
     },
     methods: {
         submit() {
             // this will trigger the process
-            this.$refs.elementRef.submit();
+            (this.isLoading = true), this.$refs.elementRef.submit();
         },
         sayHello() {
             console.log('Hello');
@@ -68,8 +118,16 @@ export default {
                         'initializeWallet',
                         parseInt(response.data.updatedWalletAmount)
                     );
+                    this.transactionId = response.data.transactionId
+                    this.isLoading = false;
+
+                    // create success dialog
+                    this.dialog = true;
                 })
                 .catch((error) => {
+                    // create fail dialog
+                    this.isLoading = false;
+                    this.errorDialog = true;
                     console.log(error);
                 });
         },
