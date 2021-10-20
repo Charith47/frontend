@@ -20,7 +20,7 @@
 						</v-tab>
 
 						<!-- short distance -->
-						<v-tab-item>
+						<v-tab-item class="short-distance">
 							<v-text-field
 								class="pt-6"
 								outlined
@@ -45,7 +45,7 @@
 						</v-tab-item>
 
 						<!-- long distance -->
-						<v-tab-item>
+						<v-tab-item class="long-distance">
 							<v-text-field
 								class="pt-6"
 								outlined
@@ -106,7 +106,9 @@
 								Search
 							</v-btn>
 						</v-tab-item>
+
 					</v-tabs>
+					
 				</v-card>
 			</v-col>
 		</v-row>
