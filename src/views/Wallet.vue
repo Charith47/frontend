@@ -20,7 +20,7 @@
         </v-card>
 
         <v-divider></v-divider>
-        <h2 class="pt-4 font-weight-medium primary--text">History</h2>
+        <h1 class="pt-4 font-weight-medium primary--text">History</h1>
         <p class="secondary--text">
             Here is the latest transactions you performed
         </p>
@@ -33,18 +33,34 @@
             :amount="transaction.amount"
         >
         </TransactionCard>
+
+        <!--on transaction fetch error-->
+        <v-alert border="left" color="red" dense outlined type="error">
+            {{ fetchError }}
+        </v-alert>
     </v-container>
 </template>
 
 <script>
 import TransactionCard from '../components/TransactionCard.vue';
+import firebase from 'firebase/compat/app';
+import 'firebase/compat/auth';
+
 export default {
+    mounted() {
+        this.$store.dispatch('getLatestTransactions');
+        const user = firebase.auth().currentUser;
+        if (user) {
+            this.name = user.displayName;
+        }
+    },
     components: {
         TransactionCard,
     },
     data() {
         return {
-            name: 'Charith',
+            name: '',
+            fetchError: '',
         };
     },
     computed: {

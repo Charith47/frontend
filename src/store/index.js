@@ -13,6 +13,7 @@ export default new Vuex.Store({
         walletAmount: 0,
         isEmailVerified: false,
         latestTransactions: [],
+        allTransactions: [],
     },
     mutations: {
         showAppBars: state => {
@@ -36,6 +37,9 @@ export default new Vuex.Store({
         updateTransactions: (state, latest) => {
             state.latestTransactions = latest;
         },
+        updateAllTransactions: (state, all) => {
+            state.allTransactions = all;
+        },
     },
     actions: {
         async getLatestTransactions({ commit }) {
@@ -47,8 +51,21 @@ export default new Vuex.Store({
                         userId: user.uid,
                     }
                 );
-                console.log(transactions);
                 commit('updateTransactions', transactions.data);
+            } catch (error) {
+                console.log(error);
+            }
+        },
+        async getAllTransactions({ commit }) {
+            try {
+                const user = firebase.auth().currentUser;
+                const transactions = await axios.post(
+                    'http://localhost:5000/transactions/all',
+                    {
+                        userId: user.uid
+                    }
+                );
+                commit('updateAllTransactions',transactions.data)
             } catch (error) {
                 console.log(error);
             }
