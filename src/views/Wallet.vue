@@ -25,7 +25,20 @@
             Here is the latest transactions you performed
         </p>
 
+        <!--on no transactions-->
+        <v-alert
+            v-if="latestTransactions.length == 0 && !this.fetchError"
+            border="left"
+            color="blue"
+            dense
+            outlined
+            type="info"
+        >
+            No transactions to show
+        </v-alert>
+
         <TransactionCard
+            v-else
             v-for="transaction in latestTransactions"
             :key="transaction.transactionId"
             :type="transaction.type"
@@ -35,7 +48,14 @@
         </TransactionCard>
 
         <!--on transaction fetch error-->
-        <v-alert border="left" color="red" dense outlined type="error">
+        <v-alert
+            v-if="fetchError"
+            border="left"
+            color="red"
+            dense
+            outlined
+            type="error"
+        >
             {{ fetchError }}
         </v-alert>
     </v-container>
@@ -47,8 +67,13 @@ import firebase from 'firebase/compat/app';
 import 'firebase/compat/auth';
 
 export default {
-    mounted() {
-        this.$store.dispatch('getLatestTransactions');
+    async mounted() {
+        try {
+            await this.$store.dispatch('getLatestTransactions');
+        } catch (error) {
+            console.log(error);
+            this.fetchError = 'Error fetching transactions';
+        }
         const user = firebase.auth().currentUser;
         if (user) {
             this.name = user.displayName;

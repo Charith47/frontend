@@ -43,7 +43,6 @@ export default new Vuex.Store({
     },
     actions: {
         async getLatestTransactions({ commit }) {
-            try {
                 const user = firebase.auth().currentUser;
                 const transactions = await axios.post(
                     'http://localhost:5000/transactions/latest',
@@ -52,12 +51,8 @@ export default new Vuex.Store({
                     }
                 );
                 commit('updateTransactions', transactions.data);
-            } catch (error) {
-                console.log(error);
-            }
         },
         async getAllTransactions({ commit }) {
-            try {
                 const user = firebase.auth().currentUser;
                 const transactions = await axios.post(
                     'http://localhost:5000/transactions/all',
@@ -66,9 +61,6 @@ export default new Vuex.Store({
                     }
                 );
                 commit('updateAllTransactions',transactions.data)
-            } catch (error) {
-                console.log(error);
-            }
         },
     },
     modules: {},
