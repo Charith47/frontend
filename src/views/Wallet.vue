@@ -2,7 +2,7 @@
     <v-container>
         <span>
             <h1 class="pt-2 font-weight-medium primary--text">
-                Hi, {{ name }}!
+                Hi, {{ this.userName }}!
             </h1></span
         >
         <p class="secondary--text">Let's check out your wallet</p>
@@ -92,6 +92,9 @@ export default {
         latestTransactions() {
             return this.$store.state.latestTransactions;
         },
+        userName(){
+            return `${this.name.charAt(0).toUpperCase() + this.name.slice(1)}`
+        }
     },
     name: 'Wallet',
 };
