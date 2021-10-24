@@ -27,22 +27,29 @@
             <v-card-text>
                 <v-form @submit.prevent="pressed">
                     <v-text-field
+                        :error-messages="usernameErrors"
                         v-model="username"
                         outlined
                         label="Username"
                         placeholder="Enter your name"
                         class="mb-1"
+                        @input="$v.username.$touch()"
+                        @blur="$v.username.$touch()"
                     ></v-text-field>
 
                     <v-text-field
+                        :error-messages="emailErrors"
                         v-model="email"
                         outlined
                         label="Email"
                         placeholder="Enter your email"
                         class="mb-1"
+                        @input="$v.email.$touch()"
+                        @blur="$v.email.$touch()"
                     ></v-text-field>
 
                     <v-text-field
+                        :error-messages="passwordErrors"
                         v-model="password"
                         outlined
                         :type="isPasswordVisible ? 'text' : 'password'"
@@ -54,9 +61,12 @@
                                 : icons.mdiEyeOutline
                         "
                         @click:append="isPasswordVisible = !isPasswordVisible"
+                        @input="$v.password.$touch()"
+                        @blur="$v.password.$touch()"
                     ></v-text-field>
 
                     <v-text-field
+                        :error-messages="confirmPasswordErrors"
                         class="mt-1"
                         v-model="confirmPassword"
                         outlined
@@ -69,9 +79,16 @@
                                 : icons.mdiEyeOutline
                         "
                         @click:append="isPasswordVisible = !isPasswordVisible"
+                        @input="$v.confirmPassword.$touch()"
+                        @blur="$v.confirmPassword.$touch()"
                     ></v-text-field>
 
-                    <v-checkbox class="mt-1">
+                    <v-checkbox
+                        v-model="checkbox"
+                        :error-messages="checkboxErrors"
+                        @input="$v.checkbox.$touch()"
+                        class="mt-1"
+                    >
                         <template #label>
                             <div class="d-flex align-center flex-wrap">
                                 <span class="me-2">I agree to</span
@@ -137,6 +154,7 @@ export default {
         password: { required, minLength: minLength(8) },
         confirmPassword: { required, sameAs: sameAs('password') },
         username: { required, maxLength: maxLength(15) },
+        checkbox: { sameAs: sameAs(() => true) },
     },
     data() {
         return {
@@ -157,6 +175,19 @@ export default {
     methods: {
         async pressed() {
             try {
+                this.$v.$touch();
+
+                // if validation errors occur, abort
+                console.log(this.emailErrors, this.passwordErrors);
+                if (
+                    this.usernameErrors.length !== 0 ||
+                    this.emailErrors.length !== 0 ||
+                    this.passwordErrors.length !== 0 ||
+                    this.confirmPasswordErrors.length !== 0 ||
+                    this.checkboxErrors.length !== 0
+                )
+                    return;
+
                 // start loading animation
                 this.isLoading = true;
                 await firebase
@@ -178,7 +209,7 @@ export default {
                 usersCollection
                     .doc(user.uid)
                     .set({ walletAmount: 0 }, { merge: true });
-                    
+
                 this.$store.commit('initializeWallet', 0);
                 this.$router.replace({ name: 'Home' });
             } catch (err) {
@@ -207,14 +238,27 @@ export default {
         passwordErrors() {
             const errors = [];
             if (!this.$v.password.$dirty) return errors;
-            !this.$v.email.required && errors.push('Password is required');
+            !this.$v.password.required && errors.push('Password is required');
+            !this.$v.password.minLength &&
+                errors.push('Password should be at least 8 charachters long');
+            return errors;
+        },
+        confirmPasswordErrors() {
+            const errors = [];
+            if (!this.$v.confirmPassword.$dirty) return errors;
+            !this.$v.confirmPassword.required &&
+                errors.push('Confirm your password');
+            !this.$v.confirmPassword.sameAs &&
+                errors.push(
+                    'Confirm password should be the same as your password'
+                );
             return errors;
         },
         checkboxErrors() {
             const errors = [];
             if (!this.$v.checkbox.$dirty) return errors;
-            !this.$v.checkbox.checked &&
-                errors.push('You must agree to continue!');
+            !this.$v.checkbox.sameAs &&
+                errors.push('You must agree to continue');
             return errors;
         },
     },

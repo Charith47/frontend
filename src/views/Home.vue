@@ -41,6 +41,7 @@ export default {
         return {
             start: '',
             destination: '',
+            list:['Mattegoda','Kottawa']
         };
     },
     methods: {},
