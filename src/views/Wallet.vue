@@ -11,7 +11,7 @@
             <h4 class="font-weight-regular secondary--text">Balance</h4>
             <span
                 ><h1 class="font-weight-medium secondary--text">
-                    {{ this.$store.state.walletAmount }}
+                    {{ this.$store.state.walletAmount }} LKR
                 </h1></span
             >
             <v-btn to="/recharge" outlined block color="primary"

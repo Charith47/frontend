@@ -55,6 +55,7 @@ export default {
     },
     methods:{
         ebuwa(){
+            // create req to buy ticket ?
             console.log('ebuwa')
         }
     },
