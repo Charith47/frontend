@@ -197,9 +197,11 @@ export default {
                 const user = firebase.auth().currentUser;
 
                 const actionCodeSettings = {
-                    url: 'https://unibus-app.ml/home',
+                    url: 'https://passenger.unibus-app.ml/',
                 };
-                user.sendEmailVerification(actionCodeSettings);
+                user.sendEmailVerification(actionCodeSettings).then(()=>{
+                    console.log('Email has been sent!')
+                });
 
                 user.updateProfile({
                     displayName: this.username,

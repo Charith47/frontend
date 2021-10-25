@@ -1,5 +1,5 @@
 <template>
-    <v-card flat outlined class="mb-2" @click="ebuwa">
+    <v-card flat outlined class="mb-2" @click="ticketClicked">
         <v-container>
             <v-row>
                 <v-col>
@@ -9,7 +9,7 @@
                         </div>
                         <div class="me-auto pe-2">
                             <h4 class="font-weight-semibold">
-                                Kottawa - Mattegoda
+                                {{ start }} - {{ destination }}
                             </h4>
 
                             <v-chip dark color="green" class="mr-2" x-small>{{
@@ -34,6 +34,9 @@
                 </v-col>
             </v-row>
         </v-container>
+    <v-dialog>
+        Hello
+    </v-dialog>
     </v-card>
 </template>
 
@@ -42,18 +45,22 @@
 
 <script>
 export default {
-    props: ['start','destination','route','price','type'],
+    props: ['start', 'destination', 'route', 'price', 'type'],
     name: 'RecentRide',
     data() {
         return {
+            options: {
+                hour: 'numeric',
+                minute: 'numeric',
+            },
             date: new Date(),
         };
     },
-    methods:{
-        ebuwa(){
+    methods: {
+        ebuwa() {
             // create req to buy ticket ?
-            console.log('ebuwa')
-        }
+            console.log('ebuwa');
+        },
     },
     computed: {},
 };

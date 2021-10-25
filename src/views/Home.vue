@@ -33,7 +33,6 @@
 
         <h2 class="pt-2 font-weight-medium primary--text">Recommended rides</h2>
         <p class="secondary--text">Based on your recent activity</p>
-        <RecentRide></RecentRide>
 
         <!--Search result dialog-->
         <v-dialog
@@ -100,8 +99,8 @@ export default {
             this.isLoading = true;
             axios
                 .post('http://localhost:5000/tickets/search', {
-                    start: this.start,
-                    destination: this.destination,
+                    start: this.start.trim(),
+                    destination: this.destination.trim(),
                 })
                 .then((response) => {
                     this.isLoading = false;

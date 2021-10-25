@@ -136,7 +136,7 @@ export default {
     methods: {
         async pressed() {
             this.$v.$touch();
-
+            
             // if validation errors occur, abort
             console.log(this.emailErrors, this.passwordErrors);
             if (
