@@ -1,5 +1,5 @@
 <template>
-    <v-card flat outlined class="mb-2"  @click="ebuwa">
+    <v-card flat outlined class="mb-2" @click="ebuwa">
         <v-container>
             <v-row>
                 <v-col>
@@ -42,14 +42,10 @@
 
 <script>
 export default {
+    props: ['start','destination','route','price','type'],
     name: 'RecentRide',
     data() {
         return {
-            start: 'Kottawa',
-            destination: 'Pitakotuwa',
-            route: '138-2',
-            type: 'Intercity',
-            price: '54',
             date: new Date(),
         };
     },

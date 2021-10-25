@@ -19,7 +19,16 @@
         >
         </v-text-field>
 
-        <v-btn dark color="primary" block class="mb-4" @click="searchRides"> Search </v-btn>
+        <v-btn
+            dark
+            color="primary"
+            block
+            class="mb-4"
+            :loading="isLoading"
+            @click="searchRides"
+        >
+            Search
+        </v-btn>
         <v-divider></v-divider>
 
         <h2 class="pt-2 font-weight-medium primary--text">Recommended rides</h2>
@@ -47,7 +56,15 @@
                 </v-toolbar>
 
                 <v-card flat color="trnasparent" class="mx-2 my-4">
-                    <RecentRide></RecentRide>
+                    <RecentRide
+                        v-for="ticket in searchResults"
+                        :key="ticket.routeNumber"
+                        :route="ticket.routeNumber"
+                        :start="ticket.start"
+                        :destination="ticket.destination"
+                        :price="ticket.price"
+                        :type="ticket.type"
+                    ></RecentRide>
                 </v-card>
             </v-card>
         </v-dialog>
@@ -57,6 +74,7 @@
 <style scoped></style>
 
 <script>
+import axios from 'axios';
 import RecentRide from '../components/TicketsBefore.vue';
 export default {
     components: {
@@ -65,10 +83,11 @@ export default {
     name: 'Home',
     data() {
         return {
+            isLoading: false,
             dialog: false,
             start: '',
             destination: '',
-            list: ['Mattegoda', 'Kottawa'],
+            searchResults: [],
         };
     },
     computed: {
@@ -77,9 +96,23 @@ export default {
         },
     },
     methods: {
-        searchRides(){
-            
-        }
+        searchRides() {
+            this.isLoading = true;
+            axios
+                .post('http://localhost:5000/tickets/search', {
+                    start: this.start,
+                    destination: this.destination,
+                })
+                .then((response) => {
+                    this.isLoading = false;
+                    this.dialog = true;
+                    this.searchResults = response.data;
+                    console.log(response.data);
+                })
+                .catch((error) => {
+                    console.log(error);
+                });
+        },
     },
     mounted() {},
 };
