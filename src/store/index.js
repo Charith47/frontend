@@ -14,6 +14,8 @@ export default new Vuex.Store({
         isEmailVerified: false,
         latestTransactions: [],
         allTransactions: [],
+        latestTickets: [],
+        allTickets: [],
     },
     mutations: {
         showAppBars: state => {
@@ -40,28 +42,37 @@ export default new Vuex.Store({
         updateAllTransactions: (state, all) => {
             state.allTransactions = all;
         },
+        updateTickets: (state, latest) => {
+            state.latestTickets = latest;
+        },
+        updateAllTickets: (state, all) => {
+            state.allTickets = all;
+        },
     },
     actions: {
         async getLatestTransactions({ commit }) {
-                const user = firebase.auth().currentUser;
-                const transactions = await axios.post(
-                    'http://localhost:5000/transactions/latest',
-                    {
-                        userId: user.uid,
-                    }
-                );
-                commit('updateTransactions', transactions.data);
+            const user = firebase.auth().currentUser;
+            const transactions = await axios.post(
+                'http://localhost:5000/transactions/latest',
+                {
+                    userId: user.uid,
+                }
+            );
+            commit('updateTransactions', transactions.data);
         },
         async getAllTransactions({ commit }) {
-                const user = firebase.auth().currentUser;
-                const transactions = await axios.post(
-                    'http://localhost:5000/transactions/all',
-                    {
-                        userId: user.uid
-                    }
-                );
-                commit('updateAllTransactions',transactions.data)
+            const user = firebase.auth().currentUser;
+            const transactions = await axios.post(
+                'http://localhost:5000/transactions/all',
+                {
+                    userId: user.uid,
+                }
+            );
+            commit('updateAllTransactions', transactions.data);
         },
+
+        // get latest tickets
+        // get all tickets
     },
     modules: {},
 });
