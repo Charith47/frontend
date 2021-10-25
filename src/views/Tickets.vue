@@ -1,76 +1,71 @@
 <template>
-<div class="container">
-    <h1>Tickets</h1>
-    <p>
-      Select one of your tickets to start your ride
-    </p>
-     <v-container>
-          <v-row class="d-flex flex-column">
-            <TicketCard 
-            v-for="ticket in tickets" 
-              :key="ticket.id"
-              :id="ticket.id"
-              :start="ticket.start"
-              :end="ticket.end"
-              :price="ticket.price"          
-            >
-            </TicketCard>
-            <h1>Subscriptions</h1>
-    <p>
-      Select one of your subcriptions
-    </p>
+    <v-container>
+        <h1 class="font-weight-medium primary--text">Tickets</h1>
+        <p class="secondary--text">
+            Select one of your tickets to start your ride
+        </p>
 
-            <SubscriptionCard
-            v-for="subscription in subscriptions"
-            :key="subscription.id"
-            :id="subscription.id"
-            :start="subscription.start"
-            :end="subscription.end"
-            :issuedDate="subscription.issuedDate"
-            :expiryDate="subscription.expiryDate"
-            :price="subscription.price"
-            >
-            </SubscriptionCard>
-           
+        <v-alert
+            v-if="allTickets.length == 0 && !this.fetchError"
+            border="left"
+            color="blue"
+            dense
+            outlined
+            type="info"
+        >
+            No tickets to show
+        </v-alert>
 
-        </v-row>
-    </v-container> 
-     
-</div>
- 
+        <TicketAfter
+            v-else
+            v-for="ticket in allTickets"
+            :key="ticket.id"
+            :start="ticket.start"
+            :destination="ticket.destination"
+            :route="ticket.route"
+            :price="ticket.price"
+            :type="ticket.type"
+        >
+        </TicketAfter>
+
+        <v-alert
+            v-if="fetchError"
+            border="left"
+            color="red"
+            dense
+            outlined
+            type="error"
+        >
+            {{ fetchError }}
+        </v-alert>
+    </v-container>
 </template>
 
 <script>
- 
- import TicketCard from '../components/TicketCard.vue'
- import SubscriptionCard from '../components/SubscriptionCard.vue'
+import TicketAfter from '../components/TicketsAfter.vue';
 
-  export default {
-    components:
-    {
-      TicketCard,
-      SubscriptionCard
-    },  
-   data()
-    {
-        return {
-            tickets : [
-               { id: 1 ,start : 'Ratmalana', end : 'Colombo', price : 100},
-               { id: 2 ,start : 'Galle', end : 'Colombo', price : 200}, 
-               { id: 3 ,start : 'Nugegoda', end : 'Dehiwala', price : 300}, 
-               { id: 4 ,start : 'Matara', end : 'Galle', price : 400},  
-            ]
-            ,
-
-             subscriptions : [
-               { id: 2 ,start : 'Ratmalana', end : 'Colombo',issuedDate : '02-03-2020', expiryDate :'02-04-2020' , price : 200}, 
-               { id: 1 ,start : 'Galle', end : 'Colombo',issuedDate : '01-03-2020', expiryDate : '01-04-2020' , price: 100},
-               { id: 3 ,start : 'Nugegoda', end : 'Dehiwala',issuedDate : '04-03-2020', expiryDate : '03-04-2020' , price: 300}, 
-               { id: 4 ,start : 'Matara', end : 'Galle',issuedDate : '06-03-2020', expiryDate : '06-04-2020', price : 400},  
-            ]
+export default {
+    async mounted() {
+        try {
+            await this.$store.dispatch('getAllTickets');
+        } catch (error) {
+            console.log(error);
+            this.fetchError = 'Error fetching tickets';
         }
     },
-      
+    components: {
+        TicketAfter,
+    },
+    data() {
+        return {
+            fetchError: false,
+        };
+    },
+    computed: {
+        allTickets() {
+            return this.$store.state.allTickets;
+        },
+    },
     name: 'Tickets',
-  }
+};
 </script>

@@ -128,6 +128,7 @@ export default {
                     destination: this.destination,
                     route: this.route,
                     price: this.price,
+                    type: this.type,
                 })
                 .then((response) => {
                     console.log(response.data.price);

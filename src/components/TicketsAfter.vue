@@ -1,5 +1,5 @@
 <template>
-    <v-card flat outlined class="mb-2"  @click="ebuwa">
+    <v-card flat outlined class="mb-2" @click="viewMap">
         <v-container>
             <v-row>
                 <v-col>
@@ -9,7 +9,7 @@
                         </div>
                         <div class="me-auto pe-2">
                             <h4 class="font-weight-semibold">
-                                Kottawa - Mattegoda
+                                {{ start }} - {{ destination }}
                             </h4>
 
                             <v-chip dark color="green" class="mr-2" x-small>{{
@@ -42,22 +42,23 @@
 
 <script>
 export default {
-    name: 'RecentRide',
+    props: ['start', 'destination', 'route', 'price', 'type'],
+    name: 'TicketAfter',
     data() {
         return {
-            start: 'Kottawa',
-            destination: 'Pitakotuwa',
-            route: '138-2',
-            type: 'Intercity',
-            price: '54',
+            options: {
+                hour: 'numeric',
+                minute: 'numeric',
+            },
             date: new Date(),
         };
     },
-    methods:{
-        ebuwa(){
+    methods: {
+        viewMap() {
+            // use ticket ?
             // should just show map and ETA
-            console.log('ebuwa')
-        }
+            console.log('ebuwa');
+        },
     },
     computed: {},
 };

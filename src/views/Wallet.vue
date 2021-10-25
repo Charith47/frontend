@@ -92,9 +92,9 @@ export default {
         latestTransactions() {
             return this.$store.state.latestTransactions;
         },
-        userName(){
-            return `${this.name.charAt(0).toUpperCase() + this.name.slice(1)}`
-        }
+        userName() {
+            return `${this.name.charAt(0).toUpperCase() + this.name.slice(1)}`;
+        },
     },
     name: 'Wallet',
 };
