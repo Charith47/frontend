@@ -35,7 +35,7 @@
                         </div>
 
                         <h4 class="font-weight-semibold secondary--text">
-                            LKR {{ amount }}
+                            {{ amount }} LKR
                         </h4>
                     </div>
                 </v-col>

@@ -44,12 +44,7 @@
                         <v-toolbar-title>Map </v-toolbar-title>
                     </v-toolbar>
 
-                    <iframe
-                        src="https://www.google.com/maps/embed/v1/directions?key=AIzaSyD2J3UsrMSkJPfIea40su-EWjeCRUgGsKA&origin=Mattegoda+Bus+Station,+Polgasowita&destination=Pettah+Private+Bus+Stand,+Colombo&avoid=tolls|highways&mode=transit"
-                        width="414"
-                        height="673"
-                    >
-                    </iframe>
+                    <iframe :src="mapSrc" width="414" height="673"> </iframe>
                 </v-card>
             </v-dialog>
         </v-container>
@@ -65,6 +60,7 @@ export default {
     name: 'TicketAfter',
     data() {
         return {
+            mapSrc: '',
             mapDialog: false,
             options: {
                 hour: 'numeric',
@@ -85,6 +81,27 @@ export default {
             console.log('view map');
         },
     },
-    computed: {},
+    beforeMount() {
+        const urlMap = new Map();
+
+        urlMap.set(
+            '138-2',
+            'https://www.google.com/maps/d/embed?mid=1CX5ygbufqLr1KLmssK5aN5BoPGfUWjtP'
+        );
+        urlMap.set(
+            '255',
+            'https://www.google.com/maps/d/embed?mid=1-i243QRnijLFbG_WTJHXvQUC6TLwjGer'
+        );
+        urlMap.set(
+            '69-122',
+            'https://www.google.com/maps/d/embed?mid=1yXHTZpT3m1nS5zBS3jN9h72uEwn1sJVs'
+        );
+        urlMap.set(
+            '01',
+            'https://www.google.com/maps/d/embed?mid=1Tbgw9KkyXb0Pmad5LyNyY76CXgTxA2O5'
+        );
+
+        this.mapSrc = urlMap.get(this.route);
+    },
 };
 </script>
