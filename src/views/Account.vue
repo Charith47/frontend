@@ -30,10 +30,6 @@
             <!--User settings and more-->
             <br />
             <v-card class="mx-4" flat color="transparent">
-                <v-btn large block class="my-2">
-                    <v-icon> mdi-bus </v-icon>
-                    <span>Ride History<br /></span>
-                </v-btn>
                 <v-btn large block class="my-2" @click="paymentHistory = true">
                     <v-icon> mdi-cash </v-icon>
                     <span>Payment History<br /></span>
@@ -42,7 +38,7 @@
                     <v-icon> mdi-cog </v-icon>
                     <span>Settings<br /></span>
                 </v-btn>
-                <br /><br /><br /><br /><br /><br />
+                <br /><br /><br /><br /><br /><br /><br /><br />
                 <v-btn @click="logout" class="my-2" block color="primary">
                     <v-icon> mdi-logout </v-icon>
                     Logout
