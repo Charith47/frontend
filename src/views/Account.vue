@@ -34,7 +34,7 @@
                     <v-icon> mdi-bus </v-icon>
                     <span>Ride History<br /></span>
                 </v-btn>
-                <v-btn large block class="my-2">
+                <v-btn large block class="my-2" @click="paymentHistory = true">
                     <v-icon> mdi-cash </v-icon>
                     <span>Payment History<br /></span>
                 </v-btn>
@@ -50,7 +50,45 @@
             </v-card>
         </v-row>
 
-        
+        <!-- payment history dialog -->
+        <v-dialog
+            v-model="paymentHistory"
+            fullscreen
+            transition="dialog-bottom-transition"
+        >
+            <v-card>
+                <v-toolbar dark color="primary">
+                    <v-btn icon dark @click="paymentHistory = false">
+                        <v-icon>mdi-close</v-icon>
+                    </v-btn>
+                    <v-toolbar-title>Payment History</v-toolbar-title>
+                </v-toolbar>
+
+                <v-card flat color="trnasparent" class="mx-2 my-4">
+                    <!--on no recent tickets-->
+                    <v-alert
+                        v-if="allTransactions.length === 0"
+                        border="left"
+                        color="blue"
+                        dense
+                        outlined
+                        type="info"
+                    >
+                        No payment history to show
+                    </v-alert>
+
+                    <TransactionCard
+                        v-else
+                        v-for="transaction in allTransactions"
+                        :key="transaction.transactionId"
+                        :type="transaction.type"
+                        :date="transaction.date"
+                        :amount="transaction.amount"
+                    >
+                    </TransactionCard>
+                </v-card>
+            </v-card>
+        </v-dialog>
     </v-container>
 </template>
 
@@ -59,21 +97,31 @@
     background: url('../assets/backgrounds/size-04.png') no-repeat center center
         fixed !important;
     height: inherit;
-	overflow-y: hidden;
+    overflow-y: hidden;
 }
 </style>
 
 <script>
 import firebase from 'firebase/compat/app';
 import 'firebase/compat/auth';
+import TransactionCard from '../components/TransactionCard.vue';
 
 export default {
-    mounted() {
+    components: {
+        TransactionCard,
+    },
+    async mounted() {
         this.user = firebase.auth().currentUser;
         if (this.user) {
             this.email = this.user.email;
             this.displayName = this.user.displayName;
             this.initials = this.userInitials(this.displayName);
+        }
+
+        try {
+            await this.$store.dispatch('getAllTransactions');
+        } catch (error) {
+            console.log(error);
         }
     },
     methods: {
@@ -94,6 +142,8 @@ export default {
     },
     data() {
         return {
+            rideHistory: false,
+            paymentHistory: false,
             user: '',
             displayName: '',
             initials: '',
@@ -102,5 +152,10 @@ export default {
         };
     },
     name: 'Account',
+    computed: {
+        allTransactions() {
+            return this.$store.state.allTransactions;
+        },
+    },
 };
 </script>
