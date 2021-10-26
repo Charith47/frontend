@@ -6,6 +6,7 @@ import Wallet from '../views/Wallet.vue';
 import Scan from '../views/Scan.vue';
 import Tickets from '../views/Tickets.vue';
 import Account from '../views/Account.vue';
+import Settings from '../views/settings/Settings.vue'
 
 import Recharge from '../views/recharge/Recharge.vue';
 
@@ -72,6 +73,13 @@ const routes = [
         name: 'Verify',
         component: VerifyEmail,
     },
+    {
+        path: '/settings',
+        name: 'Settings',
+        component: Settings,
+        meta: {  requiresAuth: true },
+    },
+    
 ];
 
 const router = new VueRouter({
