@@ -2,7 +2,6 @@
     <v-app id="main">
         <!-- top app bar -->
         <v-app-bar v-if="this.appBarState" app dense>
-
             <!-- top app bar -->
             <v-spacer></v-spacer>
             <v-chip
@@ -19,7 +18,6 @@
                 <!-- <v-icon color="black">mdi-circle-multiple</v-icon> -->
                 {{ this.getWalletAmount }} LKR</span
             >
-
         </v-app-bar>
 
         <!-- router view -->

@@ -1,5 +1,14 @@
 <template>
     <v-container class="d-flex flex-column">
+        <span>
+            <h1 class="pt-2 font-weight-medium primary--text">
+                Scan QR code
+            </h1></span
+        >
+        <p class="secondary--text mb-0">
+            Scan the QR code on the bus to start your ride.
+        </p>
+
         <v-row>
             <v-col>
                 <v-alert
@@ -15,6 +24,17 @@
         </v-row>
         <v-row>
             <v-col>
+                <v-alert
+                    v-if="loading"
+                    border="left"
+                    color="blue"
+                    dense
+                    outlined
+                    type="info"
+                >
+                    Camera loading...
+                </v-alert>
+
                 <qrcode-stream @decode="onDecode" @init="onInit" />
             </v-col>
         </v-row>
@@ -30,10 +50,53 @@
                 >
             </v-col>
         </v-row>
+
+        <!-- invalid QR code -->
+        <v-dialog v-model="errorDialog" persistent>
+            <v-card>
+                <v-card-title class="text-h6"> Invalid QR code! </v-card-title>
+                <v-card-text>
+                    This is not a valid QR code from a bus.
+                </v-card-text>
+                <v-card-actions>
+                    <v-spacer></v-spacer>
+                    <v-btn
+                        color="error darken-1"
+                        text
+                        @click="errorDialog = false"
+                    >
+                        Okay
+                    </v-btn>
+                </v-card-actions>
+            </v-card>
+        </v-dialog>
+
+        <!-- Success dialog -->
+        <v-dialog v-model="successDialog" persistent>
+            <v-card>
+                <v-card-title class="text-h6">
+                    Verification successful!
+                </v-card-title>
+                <v-card-text>
+                    Your ticket has been verified. Enjoy the ride!
+                </v-card-text>
+                <v-card-actions>
+                    <v-spacer></v-spacer>
+                    <v-btn
+                        color="success darken-1"
+                        text
+                        @click="successDialog = false"
+                    >
+                        Okay
+                    </v-btn>
+                </v-card-actions>
+            </v-card>
+        </v-dialog>
     </v-container>
 </template>
 
 <script>
+import axios from 'axios';
 import { QrcodeStream } from 'vue-qrcode-reader';
 
 export default {
@@ -42,6 +105,10 @@ export default {
 
     data() {
         return {
+            errorDialog: false,
+            successDialog: false,
+            validRoutes: ['138', '255'],
+            loading: false,
             result: '',
             error: '',
         };
@@ -49,11 +116,29 @@ export default {
 
     methods: {
         onDecode(result) {
-			// send to server
+            // send to server
             this.result = result;
+            if (!this.validRoutes.includes(result)) {
+                this.errorDialog = true;
+            } else {
+                //
+                axios
+                    .post('http://localhost:5000/qr/verify', {
+                        ticketId: this.selectedTicket[0],
+                        qrRoute: result,
+                    })
+                    .then(() => {
+                        this.successDialog = true;
+                        this.$store.commit('selectTicket', []);
+                    })
+                    .catch((error) => {
+                        console.log(error);
+                    });
+            }
         },
 
         async onInit(promise) {
+            this.loading = true;
             try {
                 await promise;
             } catch (error) {
@@ -78,7 +163,14 @@ export default {
                 } else {
                     this.error = `ERROR: Camera error (${error.name})`;
                 }
+            } finally {
+                this.loading = false;
             }
+        },
+    },
+    computed: {
+        selectedTicket() {
+            return this.$store.state.selectedTicket;
         },
     },
 };
