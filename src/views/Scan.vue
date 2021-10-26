@@ -107,7 +107,7 @@ export default {
         return {
             errorDialog: false,
             successDialog: false,
-            validRoutes: ['138', '255'],
+            validRoutes: ['138-2', '255', '69-122', '01'],
             loading: false,
             result: '',
             error: '',
@@ -116,12 +116,9 @@ export default {
 
     methods: {
         onDecode(result) {
-            // send to server
-            this.result = result;
             if (!this.validRoutes.includes(result)) {
                 this.errorDialog = true;
             } else {
-                //
                 axios
                     .post('http://localhost:5000/qr/verify', {
                         ticketId: this.selectedTicket[0],
@@ -129,6 +126,7 @@ export default {
                     })
                     .then(() => {
                         this.successDialog = true;
+                        this.result = `${result} | ${this.selectedTicket[1]}`;
                         this.$store.commit('selectTicket', []);
                     })
                     .catch((error) => {
