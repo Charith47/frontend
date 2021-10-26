@@ -9,6 +9,7 @@ Vue.use(Vuex);
 
 export default new Vuex.Store({
     state: {
+        selectedTicket: [],
         showAppBars: false,
         walletAmount: 0,
         isEmailVerified: false,
@@ -48,6 +49,11 @@ export default new Vuex.Store({
         updateAllTickets: (state, all) => {
             state.allTickets = all;
         },
+        selectTicket: (state, ticket) => {
+            // array [0] ticketID
+            // array [1] Start-Dest
+            state.selectedTicket = ticket;
+        },
     },
     actions: {
         async getLatestTransactions({ commit }) {
@@ -81,10 +87,9 @@ export default new Vuex.Store({
                     userId: user.uid,
                 }
             );
-            console.log(tickets.data)
+            console.log(tickets.data);
             commit('updateAllTickets', tickets.data);
         },
-
     },
     modules: {},
 });

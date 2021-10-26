@@ -1,12 +1,9 @@
 <template>
-    <v-card flat outlined class="mb-2" @click="viewMap">
+    <v-card flat outlined class="mb-2">
         <v-container>
             <v-row>
                 <v-col>
                     <div class="d-flex align-center flex-grow-1 flex-wrap">
-                        <div>
-                            <v-icon large class="pr-2">mdi-bus</v-icon>
-                        </div>
                         <div class="me-auto pe-2">
                             <h4 class="font-weight-semibold">
                                 {{ start }} - {{ destination }}
@@ -19,17 +16,16 @@
                                 type
                             }}</v-chip>
                             <h1></h1>
-                            <span class="text-xs secondary--text">{{
-                                new Date(date).toLocaleDateString(
-                                    'en-GB',
-                                    this.options
-                                )
-                            }}</span>
+                            <span class="text-xs secondary--text">
+                                {{ price }} LKR
+                            </span>
                         </div>
-
-                        <h2 class="font-weight-semibold secondary--text">
-                            {{ price }} LKR
-                        </h2>
+                        <v-card-actions class="px-0">
+                            <v-btn small @click="viewMap"> View Map </v-btn>
+                            <v-btn small color="primary" @click="useTicket">
+                                Use Ticket
+                            </v-btn>
+                        </v-card-actions>
                     </div>
                 </v-col>
             </v-row>
@@ -42,7 +38,7 @@
 
 <script>
 export default {
-    props: ['start', 'destination', 'route', 'price', 'type'],
+    props: ['ticketId', 'start', 'destination', 'route', 'price', 'type'],
     name: 'TicketAfter',
     data() {
         return {
@@ -54,10 +50,14 @@ export default {
         };
     },
     methods: {
+        useTicket() {
+            this.$store.commit('selectTicket', [
+                this.ticketId,
+                `${this.start} - ${this.destination}`,
+            ]);
+        },
         viewMap() {
-            // use ticket ?
-            // should just show map and ETA
-            console.log('ebuwa');
+            console.log('view map');
         },
     },
     computed: {},

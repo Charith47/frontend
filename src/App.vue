@@ -2,13 +2,24 @@
     <v-app id="main">
         <!-- top app bar -->
         <v-app-bar v-if="this.appBarState" app dense>
+
+            <!-- top app bar -->
             <v-spacer></v-spacer>
+            <v-chip
+                class="px-3 mx-4"
+                color="primary"
+                small
+                v-if="this.selectedTicket.length != 0"
+            >
+                {{ this.selectedTicket[1] }}
+            </v-chip>
 
             <!-- wallet amount -->
             <span class="mr-2 secondary--text">
                 <!-- <v-icon color="black">mdi-circle-multiple</v-icon> -->
                 {{ this.getWalletAmount }} LKR</span
             >
+
         </v-app-bar>
 
         <!-- router view -->
@@ -94,6 +105,9 @@ export default {
         },
         getWalletAmount() {
             return this.$store.state.walletAmount;
+        },
+        selectedTicket() {
+            return this.$store.state.selectedTicket;
         },
     },
     watch: {

@@ -19,7 +19,8 @@
         <TicketAfter
             v-else
             v-for="ticket in allTickets"
-            :key="ticket.id"
+            :key="ticket.ticketId"
+            :ticketId="ticket.ticketId"
             :start="ticket.start"
             :destination="ticket.destination"
             :route="ticket.route"
