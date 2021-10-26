@@ -34,7 +34,7 @@
 					<v-icon> mdi-cash </v-icon>
 					<span>Payment History<br /></span>
 				</v-btn>
-				<v-btn block class="my-2">
+				<v-btn to="/settings" block class="my-2">
 					<v-icon> mdi-cog </v-icon>
 					<span>Settings<br /></span>
 				</v-btn>
