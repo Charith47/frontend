@@ -29,6 +29,29 @@
                     </div>
                 </v-col>
             </v-row>
+
+            <!-- map dialog -->
+            <v-dialog
+                v-model="mapDialog"
+                fullscreen
+                transition="dialog-bottom-transition"
+            >
+                <v-card>
+                    <v-toolbar dark color="primary">
+                        <v-btn icon dark @click="mapDialog = false">
+                            <v-icon>mdi-close</v-icon>
+                        </v-btn>
+                        <v-toolbar-title>Map </v-toolbar-title>
+                    </v-toolbar>
+
+                    <iframe
+                        src="https://www.google.com/maps/embed/v1/directions?key=AIzaSyD2J3UsrMSkJPfIea40su-EWjeCRUgGsKA&origin=Mattegoda+Bus+Station,+Polgasowita&destination=Pettah+Private+Bus+Stand,+Colombo&avoid=tolls|highways&mode=transit"
+                        width="414"
+                        height="673"
+                    >
+                    </iframe>
+                </v-card>
+            </v-dialog>
         </v-container>
     </v-card>
 </template>
@@ -42,6 +65,7 @@ export default {
     name: 'TicketAfter',
     data() {
         return {
+            mapDialog: false,
             options: {
                 hour: 'numeric',
                 minute: 'numeric',
@@ -57,6 +81,7 @@ export default {
             ]);
         },
         viewMap() {
+            this.mapDialog = true;
             console.log('view map');
         },
     },

@@ -87,9 +87,21 @@ export default new Vuex.Store({
                     userId: user.uid,
                 }
             );
-            console.log(tickets.data);
             commit('updateAllTickets', tickets.data);
         },
+
+        async getLatestTickets({ commit }) {
+            const user = firebase.auth().currentUser;
+            const latestTickets = await axios.post(
+                'http://localhost:5000/tickets/latest',
+                {
+                    userId: user.uid,
+                }
+            );
+            console.log(latestTickets.data);
+            commit('updateTickets', latestTickets.data);
+        },
+
     },
     modules: {},
 });

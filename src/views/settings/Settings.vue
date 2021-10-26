@@ -1,33 +1,36 @@
 <template>
-    <v-container>
-        <v-card class="mx-4" flat color="transparent">
-            <v-btn @click="editUsername" block class="my-2">
+    <v-container class="mt-16 pt-16">
+
+        <v-card class="mx-2 pt-14 mt-16" flat color="transparent">
+            <v-btn @click="editUsername" block class="my-4" color="primary">
                 <v-icon> mdi-account-edit </v-icon>
-                <span>Edit username<br /></span>
+                <span>&nbsp;Edit username<br /></span>
             </v-btn>
 
-            <v-btn @click="resetPassword" block class="my-2">
+            <v-btn @click="resetPassword" block class="my-2" color="primary">
                 <v-icon> mdi-lock-reset </v-icon>
-                <span>Reset Password<br /></span>
+                <span>&nbsp;Reset Password<br /></span>
             </v-btn>
         </v-card>
+
         <v-dialog v-model="dialogEditUsername" persistent>
             <v-card>
-                <v-card-title class="text-h6">
-                    Edit username
-                </v-card-title>
-                <v-card-text>
-                    Enter new username
-                </v-card-text>
+                <v-card-title class="text-h6"> Edit username </v-card-title>
+                <v-card-text> Enter new username </v-card-text>
                 <input type="text" />
                 <v-card-actions>
                     <v-spacer></v-spacer>
-                    <v-btn color="green darken-1" text @click="dialogEditUsername = false">
+                    <v-btn
+                        color="green darken-1"
+                        text
+                        @click="dialogEditUsername = false"
+                    >
                         Save
                     </v-btn>
                 </v-card-actions>
             </v-card>
         </v-dialog>
+
         <v-dialog v-model="dialogPassword" persistent>
             <v-card>
                 <v-card-title class="text-h6">
@@ -38,16 +41,29 @@
                 </v-card-text>
                 <v-card-actions>
                     <v-spacer></v-spacer>
-                    <v-btn color="green darken-1" text @click="dialogPassword = false">
+                    <v-btn
+                        color="green darken-1"
+                        text
+                        @click="dialogPassword = false"
+                    >
                         Okay
                     </v-btn>
                 </v-card-actions>
             </v-card>
         </v-dialog>
+
+        <v-footer app bottom fixed class="d-flex justify-center">
+            <span class="">Developed with 💜 by Group 05</span>
+            <span class="secondary--text">
+                Group Project in Software Development
+            </span>
+        </v-footer>
     </v-container>
 </template>
 
-<style scoped></style>
+<style scoped>
+
+</style>
 
 <script>
 import firebase from 'firebase/compat/app';
@@ -58,7 +74,6 @@ export default {
         return { dialogPassword: false, dialogEditUsername: false };
     },
 
-    
     methods: {
         resetPassword() {
             const user = firebase.auth().currentUser;
@@ -68,7 +83,7 @@ export default {
                 .then(() => {
                     this.dialogPassword = true;
                 })
-                .catch(error => {
+                .catch((error) => {
                     console.log(error);
                 });
         },
@@ -80,7 +95,7 @@ export default {
                 .then(() => {
                     this.dialogEditUsername = true;
                 })
-                .catch(error => {
+                .catch((error) => {
                     console.log(error);
                 });
         },

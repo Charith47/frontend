@@ -34,6 +34,40 @@
         <h2 class="pt-2 font-weight-medium primary--text">Recommended rides</h2>
         <p class="secondary--text">Based on your recent activity</p>
 
+        <!--on no recent tickets-->
+        <v-alert
+            v-if="recentTickets.length == 0 && !this.fetchError"
+            border="left"
+            color="blue"
+            dense
+            outlined
+            type="info"
+        >
+            No recent activity
+        </v-alert>
+
+        <!--on ticket fetch error-->
+        <v-alert
+            v-if="fetchError"
+            border="left"
+            color="red"
+            dense
+            outlined
+            type="error"
+        >
+            {{ fetchError }}
+        </v-alert>
+
+        <RecentRide
+            v-for="ticket in recentTickets"
+            :key="ticket.ticketId"
+            :route="ticket.route"
+            :start="ticket.start"
+            :destination="ticket.destination"
+            :price="ticket.price"
+            :type="ticket.type"
+        ></RecentRide>
+
         <!--Search result dialog-->
         <v-dialog
             v-model="dialog"
@@ -55,6 +89,18 @@
                 </v-toolbar>
 
                 <v-card flat color="trnasparent" class="mx-2 my-4">
+                    <!--on no recent tickets-->
+                    <v-alert
+                        v-if="searchResults.length == 0"
+                        border="left"
+                        color="blue"
+                        dense
+                        outlined
+                        type="info"
+                    >
+                        No results for your query
+                    </v-alert>
+
                     <RecentRide
                         v-for="ticket in searchResults"
                         :key="ticket.routeNumber"
@@ -64,6 +110,7 @@
                         :price="ticket.price"
                         :type="ticket.type"
                     ></RecentRide>
+                    
                 </v-card>
             </v-card>
         </v-dialog>
@@ -75,13 +122,24 @@
 <script>
 import axios from 'axios';
 import RecentRide from '../components/TicketsBefore.vue';
+
 export default {
+    async mounted() {
+        try {
+            await this.$store.dispatch('getLatestTickets');
+        } catch (error) {
+            console.log(error);
+            this.fetchError = 'Error fetching recent tickets';
+        }
+    },
+
     components: {
         RecentRide,
     },
     name: 'Home',
     data() {
         return {
+            fetchError: '',
             isLoading: false,
             dialog: false,
             start: '',
@@ -89,11 +147,16 @@ export default {
             searchResults: [],
         };
     },
+
     computed: {
         getWalletAmount() {
             return this.$store.state.walletAmount;
         },
+        recentTickets() {
+            return this.$store.state.latestTickets;
+        },
     },
+
     methods: {
         searchRides() {
             this.isLoading = true;
@@ -113,6 +176,5 @@ export default {
                 });
         },
     },
-    mounted() {},
 };
 </script>

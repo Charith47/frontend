@@ -19,12 +19,6 @@
                                 type
                             }}</v-chip>
                             <h1></h1>
-                            <span class="text-xs secondary--text">{{
-                                new Date(date).toLocaleDateString(
-                                    'en-GB',
-                                    this.options
-                                )
-                            }}</span>
                         </div>
 
                         <h2 class="font-weight-semibold secondary--text">
@@ -104,7 +98,6 @@ export default {
                 hour: 'numeric',
                 minute: 'numeric',
             },
-            date: new Date(),
         };
     },
     methods: {
@@ -146,8 +139,7 @@ export default {
                                 parseInt(response.data.updatedWalletAmount)
                             );
                             this.$store.dispatch('getLatestTransactions');
-                            // get latest tickets
-                            // get all tickets
+                            this.$store.dispatch('getLatestTickets');
                         });
                 })
                 .catch((error) => {
