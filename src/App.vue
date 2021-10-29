@@ -58,6 +58,7 @@
 
 /* roboto-100 - latin */
 @font-face {
+    font-display: swap;
     font-family: 'Roboto';
     font-style: normal;
     font-weight: 100;
@@ -67,6 +68,7 @@
 }
 /* roboto-300 - latin */
 @font-face {
+    font-display: swap;
     font-family: 'Roboto';
     font-style: normal;
     font-weight: 300;
@@ -76,6 +78,7 @@
 }
 /* roboto-regular - latin */
 @font-face {
+    font-display: swap;
     font-family: 'Roboto';
     font-style: normal;
     font-weight: 400;
@@ -86,6 +89,7 @@
 }
 /* roboto-500 - latin */
 @font-face {
+    font-display: swap;
     font-family: 'Roboto';
     font-style: normal;
     font-weight: 500;
@@ -95,6 +99,7 @@
 }
 /* roboto-700 - latin */
 @font-face {
+    font-display: swap;
     font-family: 'Roboto';
     font-style: normal;
     font-weight: 700;
@@ -104,6 +109,7 @@
 }
 /* roboto-900 - latin */
 @font-face {
+    font-display: swap;
     font-family: 'Roboto';
     font-style: normal;
     font-weight: 900;
