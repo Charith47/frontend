@@ -13,8 +13,8 @@ const Account = () => import(/* webpackChunkName: "group-account" */'../views/Ac
 const Settings = () => import(/* webpackChunkName: "group-account" */'../views/settings/Settings.vue');
 
 
-const Login = () => import(/* webpackChunkName: "group-auth" */'../views/auth/Login.vue');
-const Register = () => import(/* webpackChunkName: "group-auth" */'../views/auth/Register.vue');
+const Login = () => import('../views/auth/Login.vue');
+const Register = () => import('../views/auth/Register.vue');
 
 import firebase from 'firebase/compat/app';
 import 'firebase/compat/auth';
