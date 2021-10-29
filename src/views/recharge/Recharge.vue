@@ -30,7 +30,10 @@
                     Payment Successful
                 </v-card-title>
 
-                <v-card-text> Credited {{ amount }} to your wallet <br> Transaction ID: {{ transactionId }} </v-card-text>
+                <v-card-text>
+                    Credited {{ amount }} to your wallet <br />
+                    Transaction ID: {{ transactionId }}
+                </v-card-text>
 
                 <v-card-actions>
                     <v-spacer></v-spacer>
@@ -80,6 +83,11 @@ import firebase from 'firebase/compat/app';
 import 'firebase/compat/auth';
 
 export default {
+    mounted() {
+        let stripeScript = document.createElement('script');
+        stripeScript.setAttribute('src', 'https://js.stripe.com/v3/');
+        document.head.appendChild(stripeScript);
+    },
     components: {
         StripeElementCard,
     },
@@ -113,12 +121,12 @@ export default {
                     amount: this.amount,
                     token: token,
                 })
-                .then((response) => {
+                .then(response => {
                     this.$store.commit(
                         'initializeWallet',
                         parseInt(response.data.updatedWalletAmount)
                     );
-                    this.transactionId = response.data.transactionId
+                    this.transactionId = response.data.transactionId;
                     this.isLoading = false;
 
                     // create success dialog
@@ -127,7 +135,7 @@ export default {
                     // update transactions
                     this.$store.dispatch('getLatestTransactions');
                 })
-                .catch((error) => {
+                .catch(error => {
                     // create fail dialog
                     this.isLoading = false;
                     this.errorDialog = true;

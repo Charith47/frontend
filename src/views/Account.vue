@@ -18,11 +18,12 @@
             >
                 <v-card class="d-flex justify-center" flat color="transparent">
                     <span
-                        ><v-icon> mdi-account </v-icon>{{ displayName }}<br
+                        ><v-icon> {{ icons.mdiAccount }} </v-icon
+                        >{{ displayName }}<br
                     /></span>
                 </v-card>
                 <v-card class="d-flex justify-center" flat color="transparent">
-                    <v-icon> mdi-email </v-icon>
+                    <v-icon> {{ icons.mdiEmail }} </v-icon>
                     <span>{{ email }}<br /></span>
                 </v-card>
             </v-card>
@@ -31,16 +32,16 @@
             <br />
             <v-card class="mx-4" flat color="transparent">
                 <v-btn large block class="my-2" @click="paymentHistory = true">
-                    <v-icon> mdi-cash </v-icon>
+                    <v-icon> {{ icons.mdiCash }} </v-icon>
                     <span>Payment History<br /></span>
                 </v-btn>
                 <v-btn large to="/settings" block class="my-2">
-                    <v-icon> mdi-cog </v-icon>
+                    <v-icon> {{ icons.mdiCog }} </v-icon>
                     <span>Settings<br /></span>
                 </v-btn>
                 <br /><br /><br /><br /><br /><br /><br /><br />
                 <v-btn @click="logout" class="my-2" block color="primary">
-                    <v-icon> mdi-logout </v-icon>
+                    <v-icon> {{ icons.mdiLogout }} </v-icon>
                     Logout
                 </v-btn>
             </v-card>
@@ -55,7 +56,7 @@
             <v-card>
                 <v-toolbar dark color="primary">
                     <v-btn icon dark @click="paymentHistory = false">
-                        <v-icon>mdi-close</v-icon>
+                        <v-icon>{{ icons.mdiClose }}</v-icon>
                     </v-btn>
                     <v-toolbar-title>Payment History</v-toolbar-title>
                 </v-toolbar>
@@ -98,6 +99,15 @@
 </style>
 
 <script>
+import {
+    mdiAccount,
+    mdiEmail,
+    mdiCash,
+    mdiCog,
+    mdiLogout,
+    mdiClose,
+} from '@mdi/js';
+
 import firebase from 'firebase/compat/app';
 import 'firebase/compat/auth';
 import TransactionCard from '../components/TransactionCard.vue';
@@ -145,6 +155,14 @@ export default {
             initials: '',
             email: '',
             loggedIn: false,
+            icons: {
+                mdiAccount,
+                mdiEmail,
+                mdiCash,
+                mdiCog,
+                mdiLogout,
+                mdiClose,
+            },
         };
     },
     name: 'Account',

@@ -15,7 +15,6 @@
 
             <!-- wallet amount -->
             <span class="mr-2 secondary--text">
-                <!-- <v-icon color="black">mdi-circle-multiple</v-icon> -->
                 {{ this.getWalletAmount }} LKR</span
             >
         </v-app-bar>
@@ -28,21 +27,21 @@
         <!-- bottom nav bar -->
         <v-bottom-navigation v-if="this.appBarState" app color="primary" grow>
             <v-btn class="nav-btn-main" to="/">
-                <v-icon>mdi-home</v-icon>
+                <v-icon>{{ icons.mdiHome }}</v-icon>
             </v-btn>
 
             <v-btn class="nav-btn-main" to="/wallet">
-                <v-icon>mdi-wallet</v-icon>
+                <v-icon>{{ icons.mdiWallet }}</v-icon>
             </v-btn>
 
             <v-btn class="nav-btn-main" to="/scan">
-                <v-icon>mdi-qrcode</v-icon>
+                <v-icon>{{ icons.mdiQrcode }}</v-icon>
             </v-btn>
             <v-btn class="nav-btn-main" to="/tickets">
-                <v-icon>mdi-ticket-confirmation</v-icon>
+                <v-icon>{{ icons.mdiTicketConfirmation }}</v-icon>
             </v-btn>
             <v-btn class="nav-btn-main" to="/account">
-                <v-icon>mdi-account</v-icon>
+                <v-icon>{{ icons.mdiAccount }}</v-icon>
             </v-btn>
         </v-bottom-navigation>
     </v-app>
@@ -56,15 +55,87 @@
 .nav-btn-main {
     height: auto !important;
 }
+
+/* roboto-100 - latin */
+@font-face {
+    font-family: 'Roboto';
+    font-style: normal;
+    font-weight: 100;
+    src: local(''), url('../fonts/roboto-v29-latin-100.woff2') format('woff2'),
+        /* Chrome 26+, Opera 23+, Firefox 39+ */
+            url('../fonts/roboto-v29-latin-100.woff') format('woff'); /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
+}
+/* roboto-300 - latin */
+@font-face {
+    font-family: 'Roboto';
+    font-style: normal;
+    font-weight: 300;
+    src: local(''), url('../fonts/roboto-v29-latin-300.woff2') format('woff2'),
+        /* Chrome 26+, Opera 23+, Firefox 39+ */
+            url('../fonts/roboto-v29-latin-300.woff') format('woff'); /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
+}
+/* roboto-regular - latin */
+@font-face {
+    font-family: 'Roboto';
+    font-style: normal;
+    font-weight: 400;
+    src: local(''),
+        url('../fonts/roboto-v29-latin-regular.woff2') format('woff2'),
+        /* Chrome 26+, Opera 23+, Firefox 39+ */
+            url('../fonts/roboto-v29-latin-regular.woff') format('woff'); /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
+}
+/* roboto-500 - latin */
+@font-face {
+    font-family: 'Roboto';
+    font-style: normal;
+    font-weight: 500;
+    src: local(''), url('../fonts/roboto-v29-latin-500.woff2') format('woff2'),
+        /* Chrome 26+, Opera 23+, Firefox 39+ */
+            url('../fonts/roboto-v29-latin-500.woff') format('woff'); /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
+}
+/* roboto-700 - latin */
+@font-face {
+    font-family: 'Roboto';
+    font-style: normal;
+    font-weight: 700;
+    src: local(''), url('../fonts/roboto-v29-latin-700.woff2') format('woff2'),
+        /* Chrome 26+, Opera 23+, Firefox 39+ */
+            url('../fonts/roboto-v29-latin-700.woff') format('woff'); /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
+}
+/* roboto-900 - latin */
+@font-face {
+    font-family: 'Roboto';
+    font-style: normal;
+    font-weight: 900;
+    src: local(''), url('../fonts/roboto-v29-latin-900.woff2') format('woff2'),
+        /* Chrome 26+, Opera 23+, Firefox 39+ */
+            url('../fonts/roboto-v29-latin-900.woff') format('woff'); /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
+}
 </style>
 
 <script>
+import {
+    mdiAccount,
+    mdiHome,
+    mdiWallet,
+    mdiQrcode,
+    mdiTicketConfirmation,
+} from '@mdi/js';
+
 import firebase from 'firebase/compat/app';
 import 'firebase/compat/auth';
 import 'firebase/compat/firestore';
 
 export default {
-    data: () => ({}),
+    data: () => ({
+        icons: {
+            mdiAccount,
+            mdiHome,
+            mdiWallet,
+            mdiQrcode,
+            mdiTicketConfirmation,
+        },
+    }),
     created() {
         const user = firebase.auth().currentUser;
 
@@ -77,7 +148,7 @@ export default {
 
             userRef
                 .get()
-                .then((doc) => {
+                .then(doc => {
                     if (doc.exists) {
                         this.$store.commit(
                             'initializeWallet',
@@ -90,7 +161,7 @@ export default {
                         console.log('No user data :(');
                     }
                 })
-                .catch((error) => {
+                .catch(error => {
                     console.log(error);
                 });
 

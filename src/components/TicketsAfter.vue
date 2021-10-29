@@ -39,7 +39,7 @@
                 <v-card>
                     <v-toolbar dark color="primary">
                         <v-btn icon dark @click="mapDialog = false">
-                            <v-icon>mdi-close</v-icon>
+                            <v-icon>{{ icons.mdiClose }}</v-icon>
                         </v-btn>
                         <v-toolbar-title>Map </v-toolbar-title>
                     </v-toolbar>
@@ -51,10 +51,11 @@
     </v-card>
 </template>
 
-<style scoped>
-</style>
+<style scoped></style>
 
 <script>
+import { mdiClose } from '@mdi/js';
+
 export default {
     props: ['ticketId', 'start', 'destination', 'route', 'price', 'type'],
     name: 'TicketAfter',
@@ -65,6 +66,9 @@ export default {
             options: {
                 hour: 'numeric',
                 minute: 'numeric',
+            },
+            icons: {
+                mdiClose,
             },
             date: new Date(),
         };

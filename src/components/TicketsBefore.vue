@@ -5,7 +5,9 @@
                 <v-col>
                     <div class="d-flex align-center flex-grow-1 flex-wrap">
                         <div>
-                            <v-icon large class="pr-2">mdi-bus</v-icon>
+                            <v-icon large class="pr-2">{{
+                                icons.mdiBus
+                            }}</v-icon>
                         </div>
                         <div class="me-auto pe-2">
                             <h4 class="font-weight-semibold">
@@ -79,10 +81,10 @@
     </v-card>
 </template>
 
-<style scoped>
-</style>
+<style scoped></style>
 
 <script>
+import { mdiBus } from '@mdi/js';
 import axios from 'axios';
 import firebase from 'firebase/compat/app';
 import 'firebase/compat/auth';
@@ -97,6 +99,9 @@ export default {
             options: {
                 hour: 'numeric',
                 minute: 'numeric',
+            },
+            icons: {
+                mdiBus,
             },
         };
     },
@@ -123,7 +128,7 @@ export default {
                     price: this.price,
                     type: this.type,
                 })
-                .then((response) => {
+                .then(response => {
                     console.log(response.data.price);
                     // create a new debit transaction
                     axios
@@ -133,7 +138,7 @@ export default {
                             amount: this.price,
                             token: null,
                         })
-                        .then((response) => {
+                        .then(response => {
                             this.$store.commit(
                                 'initializeWallet',
                                 parseInt(response.data.updatedWalletAmount)
@@ -142,7 +147,7 @@ export default {
                             this.$store.dispatch('getLatestTickets');
                         });
                 })
-                .catch((error) => {
+                .catch(error => {
                     console.log(error);
                 });
         },

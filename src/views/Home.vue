@@ -77,7 +77,7 @@
             <v-card>
                 <v-toolbar dark color="primary">
                     <v-btn icon dark @click="dialog = false">
-                        <v-icon>mdi-close</v-icon>
+                        <v-icon>{{ icons.mdiClose }}</v-icon>
                     </v-btn>
                     <v-toolbar-title>Search Results</v-toolbar-title>
                     <v-spacer></v-spacer>
@@ -110,7 +110,6 @@
                         :price="ticket.price"
                         :type="ticket.type"
                     ></RecentRide>
-                    
                 </v-card>
             </v-card>
         </v-dialog>
@@ -120,6 +119,7 @@
 <style scoped></style>
 
 <script>
+import { mdiClose } from '@mdi/js';
 import axios from 'axios';
 import RecentRide from '../components/TicketsBefore.vue';
 
@@ -145,6 +145,9 @@ export default {
             start: '',
             destination: '',
             searchResults: [],
+            icons: {
+                mdiClose,
+            },
         };
     },
 
@@ -165,13 +168,13 @@ export default {
                     start: this.start.trim(),
                     destination: this.destination.trim(),
                 })
-                .then((response) => {
+                .then(response => {
                     this.isLoading = false;
                     this.dialog = true;
                     this.searchResults = response.data;
                     console.log(response.data);
                 })
-                .catch((error) => {
+                .catch(error => {
                     console.log(error);
                 });
         },
