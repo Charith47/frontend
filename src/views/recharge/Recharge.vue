@@ -89,6 +89,8 @@ import 'firebase/compat/auth';
 import { validationMixin } from 'vuelidate';
 import { required, integer, minValue } from 'vuelidate/lib/validators';
 
+const API_ENDPOINT = process.env.VUE_APP_API;
+
 export default {
     mixins: [validationMixin],
     validations: {
@@ -130,7 +132,7 @@ export default {
             const user = firebase.auth().currentUser;
 
             axios
-                .post('http://localhost:5000/transactions/create', {
+                .post(`${API_ENDPOINT}/transactions/create`, {
                     userId: user.uid,
                     type: 'credit',
                     amount: this.amount,

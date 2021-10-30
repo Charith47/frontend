@@ -89,6 +89,8 @@ import axios from 'axios';
 import firebase from 'firebase/compat/app';
 import 'firebase/compat/auth';
 
+const API_ENDPOINT = process.env.VUE_APP_API;
+
 export default {
     props: ['start', 'destination', 'route', 'price', 'type'],
     name: 'RecentRide',
@@ -120,7 +122,7 @@ export default {
 
             const user = firebase.auth().currentUser;
             axios
-                .post('http://localhost:5000/tickets/buy', {
+                .post(`${API_ENDPOINT}/tickets/buy`, {
                     userId: user.uid,
                     start: this.start,
                     destination: this.destination,
@@ -132,7 +134,7 @@ export default {
                     console.log(response.data.price);
                     // create a new debit transaction
                     axios
-                        .post('http://localhost:5000/transactions/create', {
+                        .post(`${API_ENDPOINT}/transactions/create`, {
                             userId: user.uid,
                             type: 'debit',
                             amount: this.price,

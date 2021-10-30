@@ -123,6 +123,8 @@ import axios from 'axios';
 import { mdiClose } from '@mdi/js';
 import RecentRide from '../components/TicketsBefore.vue';
 
+const API_ENDPOINT = process.env.VUE_APP_API;
+
 export default {
     async mounted() {
         try {
@@ -164,7 +166,7 @@ export default {
         searchRides() {
             this.isLoading = true;
             axios
-                .post('http://localhost:5000/tickets/search', {
+                .post(`${API_ENDPOINT}/tickets/search`, {
                     start: this.start.trim(),
                     destination: this.destination.trim(),
                 })
