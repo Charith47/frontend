@@ -78,7 +78,6 @@
     </v-container>
 </template>
 
-<script src="https://js.stripe.com/v3/"></script>
 <script>
 import { StripeElementCard } from '@vue-stripe/vue-stripe';
 import axios from 'axios';
