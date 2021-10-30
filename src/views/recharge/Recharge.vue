@@ -5,13 +5,17 @@
                 Please enter the amount and card details
             </p>
             <v-text-field
+                :error-messages="amountErrors"
                 v-model="amount"
                 autocomplete="false"
                 dense
                 outlined
                 label="Amount (LKR)"
                 type="number"
+                @input="$v.amount.$touch()"
+                @blur="$v.amount.$touch()"
             ></v-text-field>
+
             <stripe-element-card
                 ref="elementRef"
                 :pk="pulishableKey"
@@ -82,7 +86,14 @@ import axios from 'axios';
 import firebase from 'firebase/compat/app';
 import 'firebase/compat/auth';
 
+import { validationMixin } from 'vuelidate';
+import { required, integer, minValue } from 'vuelidate/lib/validators';
+
 export default {
+    mixins: [validationMixin],
+    validations: {
+        amount: { required, integer, minValue: minValue(50) },
+    },
     mounted() {
         let stripeScript = document.createElement('script');
         stripeScript.setAttribute('src', 'https://js.stripe.com/v3/');
@@ -105,13 +116,18 @@ export default {
     },
     methods: {
         submit() {
-            // this will trigger the process
-            (this.isLoading = true), this.$refs.elementRef.submit();
-        },
-        sayHello() {
-            console.log('Hello');
+            this.$v.$touch();
+            if (this.amountErrors.length !== 0) return;
+
+            // vue-stripe bug
+            // event emits does not work
+            // change and error events are required but not working
+            // keep it this way for now
+
+            this.$refs.elementRef.submit();
         },
         tokenCreated(token) {
+            this.isLoading = true;
             const user = firebase.auth().currentUser;
 
             axios
@@ -141,6 +157,19 @@ export default {
                     this.errorDialog = true;
                     console.log(error);
                 });
+        },
+    },
+    computed: {
+        amountErrors() {
+            const errors = [];
+            if (!this.$v.amount.$dirty) return errors;
+            !this.$v.amount.required &&
+                errors.push('Please specify an amount to recharge');
+            !this.$v.amount.integer &&
+                errors.push('Only enter an integer number for the amount');
+            !this.$v.amount.minValue &&
+                errors.push('At least 50 LKR should be recharged');
+            return errors;
         },
     },
 };

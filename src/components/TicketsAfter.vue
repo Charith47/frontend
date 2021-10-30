@@ -44,7 +44,7 @@
                         <v-toolbar-title>Map </v-toolbar-title>
                     </v-toolbar>
 
-                    <iframe :src="mapSrc" width="414" height="673"> </iframe>
+                    <iframe title="bus route map" :src="mapSrc" width="414" height="673"> </iframe>
                 </v-card>
             </v-dialog>
         </v-container>
