@@ -12,7 +12,7 @@ Vue.prototype.$axios = axios;
 Vue.config.productionTip = false;
 
 const firebaseConfig = {
-	apiKey: 'AIzaSyDFSPET4XyxSkqDarFqq0lW6eLD2vxJHGI',
+	apiKey: process.env.VUE_APP_FIREBASE_KEY,
 	authDomain: 'unibus-passenger.firebaseapp.com',
 	projectId: 'unibus-passenger',
 	storageBucket: 'unibus-passenger.appspot.com',

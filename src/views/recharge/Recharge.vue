@@ -18,7 +18,7 @@
 
             <stripe-element-card
                 ref="elementRef"
-                :pk="pulishableKey"
+                :pk="pubKey"
                 @token="tokenCreated"
             />
 
@@ -103,9 +103,8 @@ export default {
         StripeElementCard,
     },
     data() {
-        this.pulishableKey =
-            'pk_test_51JdbLSHOhDuq1oSBXTT5Oz1ZjhK4uzKalsSgi8hBripsckK6FeFzewZIrRxLWa3ZeSK0fO3TkQ6FGvGbgaCXkWCG00oq5ERYio';
         return {
+            pubKey: process.env.VUE_APP_STRIPE_PUBLISHABLE_KEY,
             isLoading: false,
             dialog: false,
             errorDialog: false,
