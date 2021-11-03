@@ -7,12 +7,12 @@
                 class="my-4"
                 color="primary"
             >
-                <v-icon> mdi-account-edit </v-icon>
+                <v-icon> {{ icons.mdiAccountEdit }} </v-icon>
                 <span>&nbsp;Edit username<br /></span>
             </v-btn>
 
             <v-btn @click="resetPassword" block class="my-2" color="primary">
-                <v-icon> mdi-lock-reset </v-icon>
+                <v-icon> {{ icons.mdiLockReset }} </v-icon>
                 <span>&nbsp;Reset Password<br /></span>
             </v-btn>
         </v-card>
@@ -76,10 +76,11 @@
     </v-container>
 </template>
 
-<style scoped>
-</style>
+<style scoped></style>
 
 <script>
+import { mdiAccountEdit, mdiLockReset } from '@mdi/js';
+
 import firebase from 'firebase/compat/app';
 import 'firebase/compat/auth';
 
@@ -97,6 +98,10 @@ export default {
             dialogPassword: false,
             dialogEditUsername: false,
             newName: '',
+            icons: {
+                mdiAccountEdit,
+                mdiLockReset,
+            },
         };
     },
 
@@ -109,7 +114,7 @@ export default {
                 .then(() => {
                     this.dialogPassword = true;
                 })
-                .catch((error) => {
+                .catch(error => {
                     console.log(error);
                 });
         },

@@ -99,6 +99,8 @@
 import axios from 'axios';
 import { QrcodeStream } from 'vue-qrcode-reader';
 
+const API_ENDPOINT = process.env.VUE_APP_API;
+
 export default {
     name: 'Scan',
     components: { QrcodeStream },
@@ -120,7 +122,7 @@ export default {
                 this.errorDialog = true;
             } else {
                 axios
-                    .post('http://localhost:5000/qr/verify', {
+                    .post(`${API_ENDPOINT}/qr/verify`, {
                         ticketId: this.selectedTicket[0],
                         qrRoute: result,
                     })

@@ -27,7 +27,7 @@
 
         <!--on no transactions-->
         <v-alert
-            v-if="latestTransactions.length == 0 && !this.fetchError"
+            v-if="(latestTransactions.length == 0 && !this.fetchError) && !loadingCircle"
             border="left"
             color="blue"
             dense
@@ -58,6 +58,19 @@
         >
             {{ fetchError }}
         </v-alert>
+
+        <!-- loading transactions -->
+        <div class="text-center">
+            <v-progress-circular
+            class="mt-10"
+                v-if="loadingCircle"
+                :size="40"
+                :width="3"
+                color="primary"
+                indeterminate
+            ></v-progress-circular>
+        </div>
+
     </v-container>
 </template>
 
@@ -68,15 +81,19 @@ import 'firebase/compat/auth';
 
 export default {
     async mounted() {
-        try {
-            await this.$store.dispatch('getLatestTransactions');
-        } catch (error) {
-            console.log(error);
-            this.fetchError = 'Error fetching transactions';
-        }
         const user = firebase.auth().currentUser;
         if (user) {
             this.name = user.displayName;
+        }
+        try {
+            // set loading to true
+            this.loadingCircle = true;
+            await this.$store.dispatch('getLatestTransactions');
+        } catch (error) {
+            console.log(error);
+            // set loading to false
+            this.loadingCircle = false;
+            this.fetchError = 'Error fetching transactions';
         }
     },
     components: {
@@ -84,6 +101,7 @@ export default {
     },
     data() {
         return {
+            loadingCircle: false,
             name: '',
             fetchError: '',
         };

@@ -77,7 +77,7 @@
             <v-card>
                 <v-toolbar dark color="primary">
                     <v-btn icon dark @click="dialog = false">
-                        <v-icon>mdi-close</v-icon>
+                        <v-icon>{{ icons.mdiClose }}</v-icon>
                     </v-btn>
                     <v-toolbar-title>Search Results</v-toolbar-title>
                     <v-spacer></v-spacer>
@@ -110,7 +110,6 @@
                         :price="ticket.price"
                         :type="ticket.type"
                     ></RecentRide>
-                    
                 </v-card>
             </v-card>
         </v-dialog>
@@ -121,7 +120,10 @@
 
 <script>
 import axios from 'axios';
+import { mdiClose } from '@mdi/js';
 import RecentRide from '../components/TicketsBefore.vue';
+
+const API_ENDPOINT = process.env.VUE_APP_API;
 
 export default {
     async mounted() {
@@ -145,6 +147,9 @@ export default {
             start: '',
             destination: '',
             searchResults: [],
+            icons: {
+                mdiClose,
+            },
         };
     },
 
@@ -161,17 +166,17 @@ export default {
         searchRides() {
             this.isLoading = true;
             axios
-                .post('http://localhost:5000/tickets/search', {
+                .post(`${API_ENDPOINT}/tickets/search`, {
                     start: this.start.trim(),
                     destination: this.destination.trim(),
                 })
-                .then((response) => {
+                .then(response => {
                     this.isLoading = false;
                     this.dialog = true;
                     this.searchResults = response.data;
                     console.log(response.data);
                 })
-                .catch((error) => {
+                .catch(error => {
                     console.log(error);
                 });
         },

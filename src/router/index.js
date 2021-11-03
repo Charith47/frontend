@@ -1,18 +1,20 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
 
-import Home from '../views/Home.vue';
-import Wallet from '../views/Wallet.vue';
-import Scan from '../views/Scan.vue';
-import Tickets from '../views/Tickets.vue';
-import Account from '../views/Account.vue';
-import Settings from '../views/settings/Settings.vue'
+const Home = () => import('../views/Home.vue');
 
-import Recharge from '../views/recharge/Recharge.vue';
+const Wallet = () => import(/* webpackChunkName: "group-wallet" */'../views/Wallet.vue');
+const Recharge = () => import(/* webpackChunkName: "group-wallet" */'../views/recharge/Recharge.vue');
 
-import Login from '../views/auth/Login.vue';
-import Register from '../views/auth/Register.vue';
-import VerifyEmail from '../views/auth/VerifyEmail.vue';
+const Scan = () => import(/* webpackChunkName: "group-scan" */'../views/Scan.vue');
+const Tickets = () => import(/* webpackChunkName: "group-scan" */'../views/Tickets.vue');
+
+const Account = () => import(/* webpackChunkName: "group-account" */'../views/Account.vue');
+const Settings = () => import(/* webpackChunkName: "group-account" */'../views/settings/Settings.vue');
+
+
+const Login = () => import('../views/auth/Login.vue');
+const Register = () => import('../views/auth/Register.vue');
 
 import firebase from 'firebase/compat/app';
 import 'firebase/compat/auth';
@@ -69,17 +71,11 @@ const routes = [
         meta: { hideForAuth: true },
     },
     {
-        path: '/verify',
-        name: 'Verify',
-        component: VerifyEmail,
-    },
-    {
         path: '/settings',
         name: 'Settings',
         component: Settings,
-        meta: {  requiresAuth: true },
+        meta: { requiresAuth: true },
     },
-    
 ];
 
 const router = new VueRouter({

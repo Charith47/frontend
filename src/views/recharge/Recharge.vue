@@ -5,16 +5,20 @@
                 Please enter the amount and card details
             </p>
             <v-text-field
+                :error-messages="amountErrors"
                 v-model="amount"
                 autocomplete="false"
                 dense
                 outlined
                 label="Amount (LKR)"
                 type="number"
+                @input="$v.amount.$touch()"
+                @blur="$v.amount.$touch()"
             ></v-text-field>
+
             <stripe-element-card
                 ref="elementRef"
-                :pk="pulishableKey"
+                :pk="pubKey"
                 @token="tokenCreated"
             />
 
@@ -30,7 +34,10 @@
                     Payment Successful
                 </v-card-title>
 
-                <v-card-text> Credited {{ amount }} to your wallet <br> Transaction ID: {{ transactionId }} </v-card-text>
+                <v-card-text>
+                    Credited {{ amount }} to your wallet <br />
+                    Transaction ID: {{ transactionId }}
+                </v-card-text>
 
                 <v-card-actions>
                     <v-spacer></v-spacer>
@@ -71,7 +78,6 @@
     </v-container>
 </template>
 
-<script src="https://js.stripe.com/v3/"></script>
 <script>
 import { StripeElementCard } from '@vue-stripe/vue-stripe';
 import axios from 'axios';
@@ -79,14 +85,27 @@ import axios from 'axios';
 import firebase from 'firebase/compat/app';
 import 'firebase/compat/auth';
 
+import { validationMixin } from 'vuelidate';
+import { required, integer, minValue } from 'vuelidate/lib/validators';
+
+const API_ENDPOINT = process.env.VUE_APP_API;
+
 export default {
+    mixins: [validationMixin],
+    validations: {
+        amount: { required, integer, minValue: minValue(50) },
+    },
+    mounted() {
+        let stripeScript = document.createElement('script');
+        stripeScript.setAttribute('src', 'https://js.stripe.com/v3/');
+        document.head.appendChild(stripeScript);
+    },
     components: {
         StripeElementCard,
     },
     data() {
-        this.pulishableKey =
-            'pk_test_51JdbLSHOhDuq1oSBXTT5Oz1ZjhK4uzKalsSgi8hBripsckK6FeFzewZIrRxLWa3ZeSK0fO3TkQ6FGvGbgaCXkWCG00oq5ERYio';
         return {
+            pubKey: process.env.VUE_APP_STRIPE_PUBLISHABLE_KEY,
             isLoading: false,
             dialog: false,
             errorDialog: false,
@@ -97,28 +116,33 @@ export default {
     },
     methods: {
         submit() {
-            // this will trigger the process
-            (this.isLoading = true), this.$refs.elementRef.submit();
-        },
-        sayHello() {
-            console.log('Hello');
+            this.$v.$touch();
+            if (this.amountErrors.length !== 0) return;
+
+            // vue-stripe bug
+            // event emits does not work
+            // change and error events are required but not working
+            // keep it this way for now
+
+            this.$refs.elementRef.submit();
         },
         tokenCreated(token) {
+            this.isLoading = true;
             const user = firebase.auth().currentUser;
 
             axios
-                .post('http://localhost:5000/transactions/create', {
+                .post(`${API_ENDPOINT}/transactions/create`, {
                     userId: user.uid,
                     type: 'credit',
                     amount: this.amount,
                     token: token,
                 })
-                .then((response) => {
+                .then(response => {
                     this.$store.commit(
                         'initializeWallet',
                         parseInt(response.data.updatedWalletAmount)
                     );
-                    this.transactionId = response.data.transactionId
+                    this.transactionId = response.data.transactionId;
                     this.isLoading = false;
 
                     // create success dialog
@@ -127,12 +151,25 @@ export default {
                     // update transactions
                     this.$store.dispatch('getLatestTransactions');
                 })
-                .catch((error) => {
+                .catch(error => {
                     // create fail dialog
                     this.isLoading = false;
                     this.errorDialog = true;
                     console.log(error);
                 });
+        },
+    },
+    computed: {
+        amountErrors() {
+            const errors = [];
+            if (!this.$v.amount.$dirty) return errors;
+            !this.$v.amount.required &&
+                errors.push('Please specify an amount to recharge');
+            !this.$v.amount.integer &&
+                errors.push('Only enter an integer number for the amount');
+            !this.$v.amount.minValue &&
+                errors.push('At least 50 LKR should be recharged');
+            return errors;
         },
     },
 };

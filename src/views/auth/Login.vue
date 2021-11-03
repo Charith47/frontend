@@ -120,6 +120,7 @@ a {
 // eslint-disable-next-line object-curly-newline
 
 import { mdiEyeOutline, mdiEyeOffOutline } from '@mdi/js';
+
 import firebase from 'firebase/compat/app';
 import 'firebase/compat/auth';
 import 'firebase/compat/firestore';
@@ -136,7 +137,7 @@ export default {
     methods: {
         async pressed() {
             this.$v.$touch();
-            
+
             // if validation errors occur, abort
             console.log(this.emailErrors, this.passwordErrors);
             if (

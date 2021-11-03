@@ -5,6 +5,8 @@ import Vuex from 'vuex';
 import firebase from 'firebase/compat/app';
 import 'firebase/compat/auth';
 
+const API_ENDPOINT = process.env.VUE_APP_API;
+
 Vue.use(Vuex);
 
 export default new Vuex.Store({
@@ -59,7 +61,7 @@ export default new Vuex.Store({
         async getLatestTransactions({ commit }) {
             const user = firebase.auth().currentUser;
             const transactions = await axios.post(
-                'http://localhost:5000/transactions/latest',
+                `${API_ENDPOINT}/transactions/latest`,
                 {
                     userId: user.uid,
                 }
@@ -69,7 +71,7 @@ export default new Vuex.Store({
         async getAllTransactions({ commit }) {
             const user = firebase.auth().currentUser;
             const transactions = await axios.post(
-                'http://localhost:5000/transactions/all',
+                `${API_ENDPOINT}/transactions/all`,
                 {
                     userId: user.uid,
                 }
@@ -82,7 +84,7 @@ export default new Vuex.Store({
         async getAllTickets({ commit }) {
             const user = firebase.auth().currentUser;
             const tickets = await axios.post(
-                'http://localhost:5000/tickets/all',
+                `${API_ENDPOINT}/tickets/all`,
                 {
                     userId: user.uid,
                 }
@@ -93,7 +95,7 @@ export default new Vuex.Store({
         async getLatestTickets({ commit }) {
             const user = firebase.auth().currentUser;
             const latestTickets = await axios.post(
-                'http://localhost:5000/tickets/latest',
+                `${API_ENDPOINT}/tickets/latest`,
                 {
                     userId: user.uid,
                 }
@@ -101,7 +103,6 @@ export default new Vuex.Store({
             console.log(latestTickets.data);
             commit('updateTickets', latestTickets.data);
         },
-
     },
     modules: {},
 });
